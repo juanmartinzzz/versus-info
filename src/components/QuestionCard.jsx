@@ -1,5 +1,6 @@
-import { motion } from 'framer-motion'
-import { Timer, CheckCircle2, XCircle } from 'lucide-react'
+import { motion } from 'framer-motion';
+import { Timer, CheckCircle2, XCircle } from 'lucide-react';
+import { internationalization } from '../internationalization/internationalization';
 
 const QuestionCard = ({
   onNext,
@@ -8,7 +9,10 @@ const QuestionCard = ({
   selectedAnswer,
   onAnswerSelect,
 }) => {
-  if (!question) return null
+  const translated = internationalization.getTranslated();
+  if (!question) {
+    return null;
+  }
 
   const containerVariants = {
     hidden: { opacity: 0, y: 20 },
@@ -105,7 +109,7 @@ const QuestionCard = ({
                      transition-all duration-300"
           onClick={handleNext}
         >
-          Next Question
+          {translated.nextQuestion}
         </motion.button>
       )}
     </motion.div>

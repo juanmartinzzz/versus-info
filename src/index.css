@@ -33,6 +33,7 @@
   --color-danger: #f10064;
 
   --animate-countdown: countdown 3s ease-out;
+  --animate-background-change: background-change 8s linear normal infinite;
 }
 
 @utility answer-button {
@@ -219,6 +220,18 @@
     }
     to {
       width: 0%;
+    }
+  }
+
+  @keyframes background-change {
+    0% {
+      background-image: linear-gradient(to right, var(--color-accent1), var(--color-accent3));
+    }
+    90% {
+      background-image: linear-gradient(to right, var(--color-accent1), var(--color-accent3));
+    }
+    100% {
+      background-image: linear-gradient(to right, var(--color-warning), var(--color-danger));
     }
   }
 }

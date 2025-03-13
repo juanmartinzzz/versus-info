@@ -1,13 +1,14 @@
-import { useState, useEffect } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
-import { Trophy } from 'lucide-react'
-import QuestionCard from './components/QuestionCard.jsx'
-import ResultsScreen from './components/ResultsScreen.jsx'
-import LoadingScreen from './components/LoadingScreen.jsx'
-import useQuiz from './hooks/useQuiz.js'
-import MenuBar from './components/MenuBar.jsx'
+import useQuiz from './hooks/useQuiz.js';
+import { useState, useEffect } from 'react';
+import MenuBar from './components/MenuBar.jsx';
+import { motion, AnimatePresence } from 'framer-motion';
+import QuestionCard from './components/QuestionCard.jsx';
+import ResultsScreen from './components/ResultsScreen.jsx';
+import LoadingScreen from './components/LoadingScreen.jsx';
+import { internationalization } from './internationalization/internationalization.js';
 
 function App() {
+  const translated = internationalization.getTranslated();
   const [isLoading, setIsLoading] = useState(true)
   const {
     score,
@@ -61,7 +62,8 @@ function App() {
                   animate={{ scale: 1, opacity: 1 }}
                   transition={{ type: "spring", duration: 1.6 }}
                 >
-                  Brag Brief 📰
+                  Versus Info ■
+                  {/* Versus Info ▓ */}
                 </motion.h1>
 
                 <motion.p
@@ -70,7 +72,7 @@ function App() {
                   animate={{ y: 0, opacity: 1 }}
                   transition={{ delay: 0.2 }}
                 >
-                  Test your news knowledge!
+                  {translated.testYourNewsKnowledge}
                 </motion.p>
 
                 {!isComplete && (
