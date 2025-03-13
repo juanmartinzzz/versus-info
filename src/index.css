@@ -1,0 +1,234 @@
+@import 'tailwindcss';
+
+.helper-palette {
+  --color-white: #ffffff;
+  --color-black: #000000;
+  --color-light: #e9f3ec;
+  --color-dark: #062811;
+  --color-primary: #372927;
+  --color-secondary: #584b46;
+  --color-info: #9d7970;
+  --color-accent1: #1cc36e;
+  --color-accent2: #208f45;
+  --color-accent3: #00af3f;
+  --color-success: #58a200;
+  --color-warning: #ffbf60;
+  --color-danger: #f10064;
+}
+
+
+@theme {
+  --color-white: #ffffff;
+  --color-black: #000000;
+  --color-light: #e9f3ec;
+  --color-dark: #062811;
+  --color-primary: #372927;
+  --color-secondary: #584b46;
+  --color-info: #9d7970;
+  --color-accent1: #1cc36e;
+  --color-accent2: #208f45;
+  --color-accent3: #00af3f;
+  --color-success: #58a200;
+  --color-warning: #ffbf60;
+  --color-danger: #f10064;
+
+  --animate-countdown: countdown 3s ease-out;
+}
+
+@utility answer-button {
+  @apply w-full p-4 rounded-md border-1 border-secondary/20
+           transition-all duration-300 hover:border-accent1 hover:shadow-lg
+           hover:shadow-accent1/10 hover:-translate-y-0.5
+           focus:outline-hidden focus:ring-2 focus:ring-accent2
+           relative overflow-hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      #ffbf6020,
+      #ffbf6090 15%,
+      #ffbf6020,
+      transparent 30%
+    );
+    transform: skewX(-25deg);
+    animation: shimmer-pulse 8s ease-in-out infinite;
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  &.selected {
+    @apply border-accent1 bg-accent1/5 shadow-lg shadow-accent1/20;
+    &::before {
+      animation: none;
+    }
+  }
+
+  &.correct {
+    @apply border-success bg-success/5 shadow-lg shadow-success/20;
+    &::before {
+      animation: none;
+    }
+  }
+
+  &.correct::after {
+    content: '';
+    @apply absolute inset-0 bg-success/10
+           animate-[pulse_2s_ease-in-out_infinite];
+  }
+
+  &.incorrect {
+    @apply border-danger bg-danger/5 shadow-lg shadow-danger/20;
+    &::before {
+      animation: none;
+    }
+  }
+
+  &.incorrect::after {
+    content: '';
+    @apply absolute inset-0 bg-danger/10
+           animate-[shake_0.5s_ease-in-out];
+  }
+}
+
+@utility selected {
+  &.answer-button {
+    @apply border-accent1 bg-accent1/5 shadow-lg shadow-accent1/20;
+  }
+}
+
+@utility correct {
+  &.answer-button {
+    @apply border-success bg-success/5 shadow-lg shadow-success/20;
+  }
+
+  &.answer-button::after {
+    content: '';
+    @apply absolute inset-0 bg-success/10
+           animate-[pulse_2s_ease-in-out_infinite];
+  }
+}
+
+@utility incorrect {
+  &.answer-button {
+    @apply border-danger bg-danger/5 shadow-lg shadow-danger/20;
+  }
+
+  &.answer-button::after {
+    content: '';
+    @apply absolute inset-0 bg-danger/10
+           animate-[shake_0.5s_ease-in-out];
+  }
+}
+
+@utility progress-bar {
+  @apply h-2 bg-secondary/20 rounded-full overflow-hidden;
+}
+
+@utility progress-bar-fill {
+  @apply h-full bg-linear-to-r from-accent1 to-accent3
+           transition-all duration-500 ease-out;
+}
+
+@utility loading-dot {
+  @apply w-3 h-3 rounded-full bg-accent1;
+  animation: loading-dot 1.4s infinite ease-in-out both;
+
+  &:nth-child(1) {
+    animation-delay: -0.32s;
+  }
+  &:nth-child(2) {
+    animation-delay: -0.16s;
+  }
+}
+
+@layer utilities {
+  :root {
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    margin: 0;
+    min-width: 320px;
+    min-height: 100vh;
+    background-color: var(--color-white);
+    color: var(--color-primary);
+    background-image:
+      radial-gradient(
+        circle at 100% 0%,
+        theme('colors.accent1/0.1') 0%,
+        transparent 75%
+      ),
+      radial-gradient(
+        circle at 0% 100%,
+        theme('colors.accent2/0.2') 0%,
+        transparent 75%
+      );
+    background-attachment: fixed;
+  }
+}
+
+@layer components {
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-2px); }
+    75% { transform: translateX(2px); }
+  }
+
+  @keyframes loading-dot {
+    0%, 80%, 100% {
+      transform: scale(0);
+      opacity: 0.3;
+    }
+    40% {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+
+  @keyframes shimmer-pulse {
+    0% {
+      left: -100%;
+      opacity: 0;
+    }
+    85% {
+      left: -100%;
+      opacity: 0;
+    }
+    90% {
+      opacity: 1;
+    }
+    100% {
+      left: 100%;
+      opacity: 0;
+    }
+  }
+
+  @keyframes countdown {
+    from {
+      width: 100%;
+    }
+    to {
+      width: 0%;
+    }
+  }
+}
+
+.grid-pattern {
+  background-image: url('../src/assets/image/magicpattern-polka-dot-pattern-3.png');
+  background-position: center;
+  background-clip: border-box;
+}
+
+.test {
+  border: 2px dotted red;
+}
