@@ -56,29 +56,45 @@ const interactions = {
     en: 'Next Question',
     es: 'Siguiente Pregunta',
   },
+  checkYourResults: {
+    en: 'Check your results',
+    es: 'Ir a resultados',
+  },
 };
 
 // Results screen
 const resultsScreen = {
+  myScoreTodayWas: {
+    en: 'My score today was',
+    es: 'Mi puntaje hoy fue',
+  },
+  onVersusInfoCanYouBeatMe: {
+    en: 'on Versus Info! Can you beat me?',
+    es: 'en Versus Info! Puedes superarme?',
+  },
   shareResults: {
     en: 'Share your score',
     es: 'Comparte tu puntaje',
   },
-  quizComplete: {
-    en: "You're done with today's questions!",
-    es: 'Terminaste las preguntas de hoy!',
+  youreDone: {
+    en: "You're done!",
+    es: 'Terminaste!',
+  },
+  yourScoreTodayWas: {
+    en: 'Your score today was',
+    es: 'Tu puntaje hoy fue',
   },
   shareTodaysQuestionsWithSomeone: {
     en: 'Share today\'s questions with someone',
     es: 'Comparte hoy las preguntas con alguien',
   },
   perfectScoreYoureUpToDate: {
-    en: '🏆 Perfect Score - you\'re up to date!',
-    es: '🏆 Puntaje perfecto - estás totalmente al día!',
+    en: '🏆 Perfect Score - you\'re impressively up to date with what\'s happening!',
+    es: '🏆 Puntaje perfecto - estás totalmente al día con lo que está pasando!',
   },
-  wellDoneYoureKeepingUpWithMostNews: {
-    en: '👏 Well done - you\'re keeping up with most news',
-    es: '👏 Bien - estás al tanto de la mayoría de las noticias',
+  wellDoneYoureKeepingUpWithMostImportantCurrentEvents: {
+    en: '👏 Well done - you\'re keeping up with most important current events',
+    es: '👏 Bien - estás al tanto de muchos eventos importantes',
   },
   lookAtItThisWayNowYoureMoreInformed: {
     en: '👀 Look at it this way - now you\'re more informed!',

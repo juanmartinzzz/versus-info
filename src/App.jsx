@@ -19,12 +19,17 @@ function App() {
     currentQuestion,
     handleAnswerSelect,
     handleNextQuestion,
+    currentQuestionIndex,
     handleLoadLocalState,
-    handleLoadQuestionsFromRemote
+    handleLoadQuestionsFromRemote,
   } = useQuiz()
 
   useEffect(() => {
-    // localStorage.removeItem('previousSession');
+    // Reset questions helper for development purposes
+    const resetHelper = new URLSearchParams(window.location.search).get('reset');
+    if (resetHelper) {
+      localStorage.removeItem('previousSession');
+    }
 
     // Simulate initial loading - quick for Dev environment
     const loadingDurationSeconds = import.meta.env.MODE === 'development' ? 0.33 : 2.66;
@@ -57,7 +62,7 @@ function App() {
             >
               <header className="text-center mt-8 mb-8">
                 <motion.h1
-                  className="text-4xl md:text-5xl mb-2 bg-linear-to-r from-accent1 to-accent3 bg-clip-text text-transparent font-bold"
+                  className="text-4xl md:text-5xl bg-linear-to-r from-accent1 to-accent3 bg-clip-text text-transparent font-bold"
                   initial={{ scale: 0.5, opacity: 0 }}
                   animate={{ scale: 1, opacity: 1 }}
                   transition={{ type: "spring", duration: 1.6 }}
@@ -95,9 +100,10 @@ function App() {
                       isRevealed={isRevealed}
                       key={currentQuestion?.id}
                       question={currentQuestion}
+                      onNext={handleNextQuestion}
                       selectedAnswer={selectedAnswer}
                       onAnswerSelect={handleAnswerSelect}
-                      onNext={handleNextQuestion}
+                      currentQuestionIndex={currentQuestionIndex}
                     />
                   ) : (
                     <ResultsScreen score={score} />

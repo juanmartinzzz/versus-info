@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react'
 import supabase from '../integrations/supabase'
 
+const delayBetweenQuestionsSeconds = process.env.NODE_ENV === 'development' ? 0.5 : 3;
+
 const defaultQuestions = [
   {
     category: 'Technology',
@@ -166,7 +168,7 @@ const useQuiz = () => {
         selectedAnswer: answer,
         currentQuestionIndex: currentQuestionIndex,
       }));
-    }, 3 * 1000)
+    }, delayBetweenQuestionsSeconds * 1000)
 
     setRevealTimer(timer);
   }
@@ -195,6 +197,7 @@ const useQuiz = () => {
     currentQuestion,
     handleAnswerSelect,
     handleNextQuestion,
+    currentQuestionIndex,
     handleLoadLocalState,
     handleLoadQuestionsFromRemote
   }

@@ -8,6 +8,7 @@ const QuestionCard = ({
   isRevealed,
   selectedAnswer,
   onAnswerSelect,
+  currentQuestionIndex
 }) => {
   const translated = internationalization.getTranslated();
   if (!question) {
@@ -109,7 +110,7 @@ const QuestionCard = ({
                      transition-all duration-300"
           onClick={handleNext}
         >
-          {translated.nextQuestion}
+          {currentQuestionIndex === 4 ? translated.checkYourResults : translated.nextQuestion}
         </motion.button>
       )}
     </motion.div>
