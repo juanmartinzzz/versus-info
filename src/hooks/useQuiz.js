@@ -124,7 +124,6 @@ const useQuiz = () => {
 
   const handleLoadQuestionsFromRemote = async () => {
     const question = await supabase.getRelevantQuestion();
-    console.log({items: question.items});
 
     if(Array.isArray(question.items)) {
       setQuestions(question.items);

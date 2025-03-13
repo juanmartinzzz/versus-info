@@ -178,6 +178,28 @@ const getRelevantQuestion = async () => {
 };
 
 /**
+ * @param {string} userId - The ID of the user
+ * @returns {Promise} - The result of the fetch operation
+ */
+const getRelevantQuestionByDate = async ({date}) => {
+  try {
+    const { data, error } = await supabaseClient
+      .from('questions')
+      .select('*')
+      .eq('relevant_date', date)
+      .limit(1);
+
+    if (error) throw error;
+
+    const question = data[0];
+    return transformKeysToCamelCase({data: question});
+  } catch (error) {
+    console.error('Error fetching relevant question:', error);
+    return { data: null, error };
+  }
+};
+
+/**
  * @param {string} id - The ID of the plan to fetch
  * @returns {Promise} - The result of the fetch operation
  */
@@ -204,6 +226,7 @@ const supabase = {
   deleteQuestions,
   getQuestionById,
   getRelevantQuestion,
+  getRelevantQuestionByDate
 }
 
 export default supabase;

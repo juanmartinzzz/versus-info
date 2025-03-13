@@ -1,30 +1,44 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import supabase from "../integrations/supabase";
 import { PlusIcon } from "lucide-react";
 
+const defaultItems = [1,2,3,4,5].map(index => ({
+  emoji: '',
+  category: '',
+  text: '',
+  options: [
+      {
+        value: '',
+        correct: false
+      },
+      {
+        value: '',
+        correct: false
+      },
+      {
+        value: '',
+        correct: false
+      }
+    ]
+  })
+);
+
+const tomorrowsDate = new Date(Date.now() + 86400000); // 86400000 ms in a day
+
 const InsertQuestionsHelper = () => {
-  const [relevantDate, setRelevantDate] = useState(new Date().toISOString().split('T')[0]);
+  const [relevantDate, setRelevantDate] = useState(tomorrowsDate.toISOString().split('T')[0]);
   const [error, setError] = useState(null);
-  const [items, setItems] = useState([1,2,3,4,5].map(index => ({
-    emoji: '',
-    category: '',
-    text: '',
-    options: [
-        {
-          value: '',
-          correct: false
-        },
-        {
-          value: '',
-          correct: false
-        },
-        {
-          value: '',
-          correct: false
-        }
-      ]
-    })
-  ));
+  const [items, setItems] = useState(defaultItems);
+
+  useEffect(() => {
+    supabase.getRelevantQuestionByDate({date: relevantDate}).then(question => {
+      if(question) {
+        setItems(question.items);
+      } else {
+        setItems(defaultItems);
+      }
+    });
+  }, [relevantDate]);
 
   const insertQuestion = () => {
     supabase.upsertQuestion({
