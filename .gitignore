@@ -1,0 +1,28 @@
+# Build directory
+build/
+dist/
+
+
+# Firebase
+.firebase/
+.firebaserc
+
+
+# IDEs, MacOS, Windows
+.idea/
+.vscode/
+.DS_Store
+
+
+# Node modules
+node_modules/
+
+
+# Environment variables
+.env
+.env.dev
+.env.prod
+
+
+# Generations
+generations/
