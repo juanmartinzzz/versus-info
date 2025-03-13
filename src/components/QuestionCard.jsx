@@ -8,7 +8,6 @@ const QuestionCard = ({
   selectedAnswer,
   onAnswerSelect,
 }) => {
-  console.log({question});
   if (!question) return null
 
   const containerVariants = {

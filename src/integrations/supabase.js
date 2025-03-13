@@ -85,7 +85,6 @@ const getIpAndGeoData = async () => {
  * @returns {Promise} - The result of the upsert operation
  */
 const upsertQuestion = async ({question}) => {
-  console.log({question});
   try {
     const { data, error } = await supabaseClient
       .from('questions')
