@@ -3,6 +3,7 @@ import supabase from "../integrations/supabase";
 import { PlusIcon } from "lucide-react";
 
 const defaultItems = [1,2,3,4,5].map(index => ({
+  id: index,
   emoji: '',
   category: '',
   text: '',

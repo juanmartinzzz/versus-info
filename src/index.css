@@ -10,7 +10,7 @@
   --color-info: #9d7970;
   --color-accent1: #1cc36e;
   --color-accent2: #208f45;
-  --color-accent3: #00af3f;
+  --color-accent3: #187e5a;
   --color-success: #58a200;
   --color-warning: #ffbf60;
   --color-danger: #f10064;
@@ -27,7 +27,7 @@
   --color-info: #9d7970;
   --color-accent1: #1cc36e;
   --color-accent2: #208f45;
-  --color-accent3: #00af3f;
+  --color-accent3: #187e5a;
   --color-success: #58a200;
   --color-warning: #ffbf60;
   --color-danger: #f10064;
@@ -227,11 +227,14 @@
     0% {
       background-image: linear-gradient(to right, var(--color-accent1), var(--color-accent3));
     }
-    90% {
+    30% {
+      background-image: linear-gradient(to right, var(--color-warning), var(--color-danger));
+    }
+    40% {
       background-image: linear-gradient(to right, var(--color-accent1), var(--color-accent3));
     }
     100% {
-      background-image: linear-gradient(to right, var(--color-warning), var(--color-danger));
+      background-image: linear-gradient(to right, var(--color-accent1), var(--color-accent3));
     }
   }
 }

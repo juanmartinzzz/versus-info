@@ -110,17 +110,19 @@ const upsertAnswer = async ({answer}) => {
   try {
     // Get IP and geo data
     const ipGeoData = await getIpAndGeoData();
+    const localId = localStorage.getItem('localId');
 
     // Prepare the plan data with IP and geo information
     const enrichedData = {
       ...transformKeysToUnderscores({data: answer}),
       ...transformKeysToUnderscores({data: ipGeoData}),
+      local_id: localId,
     };
 
     const { data, error } = await supabaseClient
       .from('answers')
       .upsert(enrichedData, {
-        onConflict: 'id',
+        onConflict: ['local_id', 'relevant_date'],
         returning: 'minimal' // Only return the minimal data needed
       });
 

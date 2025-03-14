@@ -1,16 +1,20 @@
+import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Timer, CheckCircle2, XCircle } from 'lucide-react';
+import { Timer, CheckCircle2, XCircle, ThumbsUp, ThumbsDown } from 'lucide-react';
 import { internationalization } from '../internationalization/internationalization';
 
 const QuestionCard = ({
   onNext,
   question,
   isRevealed,
+  onFeedback,
   selectedAnswer,
   onAnswerSelect,
-  currentQuestionIndex
+  currentQuestionIndex,
 }) => {
   const translated = internationalization.getTranslated();
+  const [feedbackGiven, setFeedbackGiven] = useState(null);
+
   if (!question) {
     return null;
   }
@@ -34,9 +38,39 @@ const QuestionCard = ({
   }
 
   const handleNext = (e) => {
-    e.preventDefault()
-    e.stopPropagation()
-    onNext()
+    e.preventDefault();
+    e.stopPropagation();
+    setFeedbackGiven(null);
+    onNext();
+  }
+
+  const handleFeedback = (feedback) => {
+    setFeedbackGiven(feedback);
+    onFeedback(feedback);
+  }
+
+  const FeedbackButtons = ({ size = 18 }) => {
+    return(
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="flex items-center justify-center gap-4"
+      >
+        <button
+          onClick={() => handleFeedback('thumbsDown')}
+          className={`hover:bg-gray-100 cursor-pointer`}
+        >
+          <ThumbsDown size={size} className={`${feedbackGiven === 'thumbsDown' ? 'text-danger' : 'text-primary'}`} />
+        </button>
+
+        <button
+          onClick={() => handleFeedback('thumbsUp')}
+          className={`hover:bg-gray-100 cursor-pointer`}
+        >
+          <ThumbsUp size={size} className={`${feedbackGiven === 'thumbsUp' ? 'text-accent1' : 'text-primary'}`} />
+        </button>
+      </motion.div>
+    )
   }
 
   return (
@@ -48,26 +82,33 @@ const QuestionCard = ({
       className="bg-white backdrop-blur-xs rounded-md p-6 shadow-lg"
     >
       <motion.div
-        className="flex items-center gap-2 text-info mb-4"
         variants={itemVariants}
+        className="flex justify-between gap-2 text-info mb-4"
       >
-        <span className="text-xl">{question.emoji}</span>
-        <span className="text-xl font-semibold">{question.category}</span>
+        <div className="flex items-center gap-2">
+          <span className="text-xl">{question.emoji}</span>
+          <span className="text-xl font-semibold">{question.category}</span>
+        </div>
 
-        {selectedAnswer && !isRevealed && (
-          <div className="ml-auto flex items-center gap-2 w-full">
-            <Timer className="w-4 h-4 text-accent1 animate-pulse" />
-            <span className="bg-accent1 rounded-full h-1 animate-countdown"></span>
-          </div>
-        )}
+        <FeedbackButtons />
       </motion.div>
 
       <motion.h2
         variants={itemVariants}
-        className="text-2xl font-semibold mb-8 leading-tight"
+        className="text-2xl text-primary font-semibold leading-[1.066]"
       >
         {question.text}
       </motion.h2>
+
+      <div className="py-2 ml-auto flex items-center gap-2 w-full">
+        {/* {true && ( */}
+        {selectedAnswer && !isRevealed && (
+          <>
+            <Timer className="w-4 h-4 text-accent1 animate-pulse" />
+            <span className="bg-accent1 rounded-full h-1 animate-countdown"></span>
+          </>
+        )}
+      </div>
 
       <div className="space-y-4">
         {question.options.map((option, index) => (
@@ -104,10 +145,7 @@ const QuestionCard = ({
         <motion.button
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="mt-8 w-full bg-linear-to-r from-accent1 to-accent3
-                     text-white py-3 rounded-md hover:shadow-lg
-                     hover:shadow-accent1/20 hover:-translate-y-0.5
-                     transition-all duration-300"
+          className="mt-4 w-full bg-linear-to-r from-accent1 to-accent3 text-white py-3 rounded-md hover:shadow-lg hover:shadow-accent1/20 hover:-translate-y-0.5 transition-all duration-300"
           onClick={handleNext}
         >
           {currentQuestionIndex === 4 ? translated.checkYourResults : translated.nextQuestion}

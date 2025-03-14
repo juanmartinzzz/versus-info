@@ -1,32 +1,83 @@
 import { motion } from 'framer-motion';
 import { QRCodeSVG } from 'qrcode.react';
+import { useEffect, useState } from 'react';
+import supabase from '../integrations/supabase';
 import { Hexagon, Share2, Star, Trophy } from 'lucide-react';
 import { internationalization } from '../internationalization/internationalization';
+import time from '../utils/time';
 
-const ResultsScreen = ({ score }) => {
+const upsertAnswer = async ({score, questionsData}) => {
+  // Don't store answers for Dev environment
+  if (import.meta.env.DEV) {
+    console.log('DEV: not upserting answer');
+    return;
+  }
+
+  const answer = {
+    score,
+    questionsData,
+    relevant_date: time.getDateWithoutTimeString(),
+  }
+
+  supabase.upsertAnswer({answer});
+}
+
+const ResultsScreen = ({ score, questionsData }) => {
   const translated = internationalization.getTranslated();
+  const [shouldShowSharingInstructions, setShouldShowSharingInstructions] = useState(false);
+
+  useEffect(() => {
+    // Store answer information with questionsData
+    upsertAnswer({score, questionsData});
+  }, []);
 
   const shareResults = () => {
     const phrases = [
-      `🎯 ${translated.myScoreTodayWas} ${score} ${translated.onVersusInfoCanYouBeatMe}`,
+      `🎯 ${translated.myScoreTodayWas} ${score}`,
+      Object.values(questionsData).map(questionData => questionData.isCorrect ? '🟢' : '🔴').join(''),
+      `${translated.canYouBeatMe}`,
       `${import.meta.env.VITE_SHARE_URL}?lc=${localStorage.getItem('languageCode')}`,
-    ]
+    ];
 
     const text = phrases.join(`\n`);
-    console.log({text});
     navigator.clipboard.writeText(text);
+
+    setShouldShowSharingInstructions(true);
   }
 
-  const getMessage = () => {
-    if (score === 5) return translated.perfectScoreYoureUpToDate
-    if (score >= 3) return translated.wellDoneYoureKeepingUpWithMostImportantCurrentEvents
-    return translated.lookAtItThisWayNowYoureMoreInformed
+  const ShareResultsButton = () => {
+    return (
+      <motion.button
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.98 }}
+        onClick={shareResults}
+        className="flex items-center justify-center gap-2 text-white text-xl py-4 px-6 rounded-md animate-background-change"
+      >
+        <Share2 className="w-6 h-6" />
+        {translated.tapHereToChallengeOthers}
+      </motion.button>
+    )
+  }
+
+  const SharingInstructions = () => {
+    return (
+      <motion.div
+        initial={{ opacity: 0, y: -36 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.66 }}
+        className="p-4 bg-secondary/10 border-[3px] border-dashed border-gray-400 rounded-xl"
+      >
+        <p className="text-lg font-bold leading-tight">{translated.resultCopied}</p>
+        <p className="text-lg font-bold leading-tight">{translated.pasteItOnAnyChatGroupToChallengeOthers}</p>
+      </motion.div>
+    )
   }
 
   return (
     <motion.div
-      initial={{ opacity: 0, scale: 0.95 }}
+      initial={{ opacity: 0, scale: 0.66 }}
       animate={{ opacity: 1, scale: 1 }}
+      transition={{ delay: 0.66, duration: 0.66 }}
       className="bg-white/80 backdrop-blur-xs rounded-md p-6 shadow-lg text-center"
     >
       <div className="mb-4 relative flex flex-col items-center justify-center">
@@ -52,11 +103,11 @@ const ResultsScreen = ({ score }) => {
       </div>
 
       <h2 className="text-3xl mb-4 text-secondary uppercase font-bold">
-        {translated.youreDone}
+        {translated.done}
       </h2>
 
-      <h2 className="text-3xl bg-linear-to-r from-accent1 to-accent3 bg-clip-text text-transparent font-bold">
-        {translated.yourScoreTodayWas}
+      <h2 className="text-3xl  font-bold">
+        <span className='bg-linear-to-r from-accent1 to-accent3 bg-clip-text text-transparent'>{translated.yourScoreTodayWas}</span>
       </h2>
 
       <div className="mb-4 relative flex flex-col items-center justify-center">
@@ -65,31 +116,26 @@ const ResultsScreen = ({ score }) => {
         <span className="absolute top-4 text-9xl text-accent1/66 font-bold">{score}</span>
       </div>
 
-      <p className="text-xl mb-8">{getMessage()}</p>
+      <div className="flex flex-col gap-4 mt-4">
+        {shouldShowSharingInstructions ? <SharingInstructions /> : <ShareResultsButton />}
 
-      <div className="flex flex-col gap-4">
-        <motion.button
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.98 }}
-          onClick={shareResults}
-          className="flex items-center justify-center gap-2 text-white text-xl py-4 px-6 rounded-md animate-background-change"
-        >
-          <Share2 className="w-6 h-6" />
-          {translated.shareResults}
-        </motion.button>
+        <p className="text-md text-secondary font-semibold leading-tight">{translated.soTheyCanAlsoLearnAboutTopCurrentEvents}</p>
       </div>
 
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.5 }}
-        className="mt-8 p-6 bg-accent1/20 rounded-md"
+        className="mt-8"
       >
-        <p className="text-sm mb-4">{translated.shareTodaysQuestionsWithSomeone}</p>
-        <div className="flex justify-center">
+        <p className="text-md text-secondary mb-2">{translated.useThisQrCodeToChallengeSomeoneInFrontOfYou}</p>
+
+        <div className="flex justify-center p-6 bg-accent1/15 rounded-md">
           <QRCodeSVG
             value={window.location.href}
             size={150}
+            bgColor="#ffffff"
+            fgColor="var(--color-accent3)"
             className="rounded-md shadow-lg"
           />
         </div>

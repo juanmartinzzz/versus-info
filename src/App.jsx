@@ -15,6 +15,7 @@ function App() {
     progress,
     isComplete,
     isRevealed,
+    questionsData,
     selectedAnswer,
     currentQuestion,
     handleAnswerSelect,
@@ -22,12 +23,13 @@ function App() {
     currentQuestionIndex,
     handleLoadLocalState,
     handleLoadQuestionsFromRemote,
+    handleQuestionFeedback,
   } = useQuiz()
 
   useEffect(() => {
     // Reset questions helper for development purposes
-    const resetHelper = new URLSearchParams(window.location.search).get('reset');
-    if (resetHelper) {
+    const resetQueryParam = new URLSearchParams(window.location.search).get('reset');
+    if (resetQueryParam) {
       localStorage.removeItem('previousSession');
     }
 
@@ -103,10 +105,14 @@ function App() {
                       onNext={handleNextQuestion}
                       selectedAnswer={selectedAnswer}
                       onAnswerSelect={handleAnswerSelect}
+                      onFeedback={handleQuestionFeedback}
                       currentQuestionIndex={currentQuestionIndex}
                     />
                   ) : (
-                    <ResultsScreen score={score} />
+                    <ResultsScreen
+                      score={score}
+                      questionsData={questionsData}
+                    />
                   )}
                 </AnimatePresence>
               </main>

@@ -23,6 +23,12 @@ const languageCodeFromQueryParam = new URLSearchParams(window.location.search).g
 const validLangaugeCodeFromQueryParam = constants.languages.includes(languageCodeFromQueryParam) ? languageCodeFromQueryParam : null;
 const selectedLanguage = languageCode || validLangaugeCodeFromQueryParam || 'en';
 
+// Get local ID from localStorage or generate a new one
+const localId = localStorage.getItem('localId');
+if (!localId) {
+  localStorage.setItem('localId', Math.random().toString(36).substring(2, 15));
+}
+
 // Set language code in localStorage
 localStorage.setItem('languageCode', selectedLanguage);
 

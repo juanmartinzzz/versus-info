@@ -68,38 +68,54 @@ const resultsScreen = {
     en: 'My score today was',
     es: 'Mi puntaje hoy fue',
   },
-  onVersusInfoCanYouBeatMe: {
-    en: 'on Versus Info! Can you beat me?',
-    es: 'en Versus Info! Puedes superarme?',
+  canYouBeatMe: {
+    en: 'Can you beat me?',
+    es: 'Puedes superarme?',
   },
   shareResults: {
     en: 'Share your score',
     es: 'Comparte tu puntaje',
   },
-  youreDone: {
-    en: "You're done!",
-    es: 'Terminaste!',
+  tapHereToChallengeOthers: {
+    en: 'Tap here to challenge others',
+    es: 'Toca aquí para desafiar a otros',
+  },
+  done: {
+    en: "Done!",
+    es: 'Listo!',
   },
   yourScoreTodayWas: {
     en: 'Your score today was',
     es: 'Tu puntaje hoy fue',
   },
-  shareTodaysQuestionsWithSomeone: {
-    en: 'Share today\'s questions with someone',
-    es: 'Comparte hoy las preguntas con alguien',
+  resultCopied: {
+    en: 'Result copied 📋',
+    es: 'Resultado copiado 📋',
   },
-  perfectScoreYoureUpToDate: {
-    en: '🏆 Perfect Score - you\'re impressively up to date with what\'s happening!',
-    es: '🏆 Puntaje perfecto - estás totalmente al día con lo que está pasando!',
+  pasteItOnAnyChatGroupToChallengeOthers: {
+    en: 'Paste it on any chat group to challenge others',
+    es: 'Pégalo en cualquier grupo de chat para desafiar a otros',
   },
-  wellDoneYoureKeepingUpWithMostImportantCurrentEvents: {
-    en: '👏 Well done - you\'re keeping up with most important current events',
-    es: '👏 Bien - estás al tanto de muchos eventos importantes',
+  soTheyCanAlsoLearnAboutTopCurrentEvents: {
+    en: 'So they can also learn about top current events',
+    es: 'Y haz que también se enteren de las noticias más importantes',
   },
-  lookAtItThisWayNowYoureMoreInformed: {
-    en: '👀 Look at it this way - now you\'re more informed!',
-    es: '👀 Míralo de esta manera - ahora estás mejor informado!',
+  useThisQrCodeToChallengeSomeoneInFrontOfYou: {
+    en: 'Use this QR code to challenge someone in front of you',
+    es: 'Usa este QR para desafiar a alguien frente a tí',
   },
+  // perfectScoreYoureUpToDate: {
+  //   en: '🏆 Perfect Score - you\'re impressively up to date with what\'s happening!',
+  //   es: '🏆 Puntaje perfecto - estás totalmente al día con lo que está pasando!',
+  // },
+  // wellDoneYoureKeepingUpWithMostImportantCurrentEvents: {
+  //   en: '👏 Well done - you\'re keeping up with most important current events',
+  //   es: '👏 Bien - estás al tanto de muchos eventos importantes',
+  // },
+  // lookAtItThisWayNowYoureMoreInformed: {
+  //   en: '👀 Look at it this way - now you\'re more informed!',
+  //   es: '👀 Míralo de esta manera - ahora estás mejor informado!',
+  // },
 }
 
 const allGlobalTexts = {
