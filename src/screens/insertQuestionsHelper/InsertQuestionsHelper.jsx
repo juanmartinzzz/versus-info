@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
-import supabase from "../integrations/supabase";
+import supabase from "../../integrations/supabase";
 import { PlusIcon } from "lucide-react";
+import time from "../../utils/time";
 
 const defaultItems = [1,2,3,4,5].map(index => ({
-  id: index,
+  id: index+1,
   emoji: '',
   category: '',
   text: '',
@@ -24,10 +25,10 @@ const defaultItems = [1,2,3,4,5].map(index => ({
   })
 );
 
-const tomorrowsDate = new Date(Date.now() + 86400000); // 86400000 ms in a day
+const tomorrowsDate = time.getTomorrowDateWithoutTimeString();
 
 const InsertQuestionsHelper = () => {
-  const [relevantDate, setRelevantDate] = useState(tomorrowsDate.toISOString().split('T')[0]);
+  const [relevantDate, setRelevantDate] = useState(tomorrowsDate);
   const [error, setError] = useState(null);
   const [items, setItems] = useState(defaultItems);
 
@@ -66,6 +67,21 @@ const InsertQuestionsHelper = () => {
     });
   }
 
+  // Mark one and only one option as correct
+  const markCorrectAnswer = (index, optionIndex) => {
+    // Unmark all other options
+    const newItems = items.map(item => ({
+      ...item,
+      options: item.options.map(option => ({
+        ...option,
+        correct: false
+      }))
+    }));
+    newItems[index].options[optionIndex].correct = true;
+
+    setItems(newItems);
+  }
+
   return (
     <div className="p-4 md:p-8">
       <h1 className="text-2xl font-bold mb-4">Insert Questions Helper</h1>
@@ -91,7 +107,7 @@ const InsertQuestionsHelper = () => {
                 type="text"
                 value={items[index].category}
                 onChange={({target}) => editItem({index, key: 'category', value: target.value})}
-                className="px-2 py-1 border border-gray-300"
+                className="px-2 py-0 border border-gray-300"
               />
             </div>
 
@@ -102,7 +118,7 @@ const InsertQuestionsHelper = () => {
                 type="text"
                 value={items[index].emoji}
                 onChange={({target}) => editItem({index, key: 'emoji', value: target.value})}
-                className="px-2 py-1 border border-gray-300"
+                className="px-2 py-0 border border-gray-300"
               />
             </div>
 
@@ -113,32 +129,29 @@ const InsertQuestionsHelper = () => {
                 rows={4}
                 value={items[index].text}
                 onChange={({target}) => editItem({index, key: 'text', value: target.value})}
-                className="px-2 py-1 border border-gray-300 leading-none"
+                className="px-2 py-0 border border-gray-300 leading-none"
               ></textarea>
             </div>
 
             {/* Three text inputs for the 3 possible answers to the question */}
             {Array.from({ length: 3 }, (_, answerIndex) => (
-              <div key={answerIndex} className="mb-2 font-semibold w-[33%] flex flex-col">
+              <div key={answerIndex} className="mb-2 font-semibold w-full">
+                {/* Label and checkbox to mark answer as correct */}
                 <span className="leading-none">Option {answerIndex + 1}</span>
+                <span className="ml-2 leading-none">Correct</span>
+                <input
+                  type="checkbox"
+                  className="ml-2 w-5 h-5 text-accent1 border-gray-300 focus:ring-accent1 focus:ring-2"
+                  checked={items[index].options[answerIndex].correct}
+                  onChange={() => markCorrectAnswer(index, answerIndex)}
+                />
 
                 <input
                   type="text"
                   value={items[index].options[answerIndex].value}
                   onChange={({target}) => editItemOption({index, optionIndex: answerIndex, key: 'value', value: target.value})}
-                  className="px-2 py-1 border border-gray-300 w-full"
+                  className="px-2 py-0 border border-gray-300 w-full"
                 />
-
-                {/* Checkbox to mark the answer as correct */}
-                <div className="">
-                  <span className="mr-2 leading-none">Correct</span>
-
-                  <input
-                    type="checkbox"
-                    checked={items[index].options[answerIndex].correct}
-                    onChange={({target}) => editItemOption({index, optionIndex: answerIndex, key: 'correct', value: target.checked})}
-                  />
-                </div>
               </div>
             ))}
           </div>
