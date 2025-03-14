@@ -1,3 +1,4 @@
+import time from '../utils/time';
 import { createClient } from '@supabase/supabase-js';
 
 // Initialize the Supabase client with environment variables
@@ -137,7 +138,7 @@ const upsertAnswer = async ({answer}) => {
 
 
 /**
- * @param {string} id - The ID of the plan to delete
+ * @param {string} id - The ID of the question to delete
  * @returns {Promise} - The result of the delete operation
  */
 const deleteQuestions = async ({id}) => {
@@ -157,7 +158,6 @@ const deleteQuestions = async ({id}) => {
 };
 
 /**
- * @param {string} userId - The ID of the user
  * @returns {Promise} - The result of the fetch operation
  */
 const getRelevantQuestion = async () => {
@@ -165,10 +165,14 @@ const getRelevantQuestion = async () => {
     const { data, error } = await supabaseClient
       .from('questions')
       .select('*')
-      .order('relevant_date', { ascending: false })
+      .eq('relevant_date', time.getDateWithoutTimeString())
       .limit(1);
 
-    if (error) throw error;
+    if(error) throw error;
+
+    if(data.length === 0) {
+      throw new Error('No question found');
+    }
 
     const question = data[0];
     return transformKeysToCamelCase({data: question});

@@ -32,12 +32,27 @@ const inter = ({texts}) => {
 
 /// Header
 const header = {
-  testYourNewsKnowledge: {
-    en: 'Test your news knowledge!',
-    es: 'Cuánto sabes de noticias?',
+  catchUpAndChallengeOthers: {
+    en: 'Catch up and challenge others',
+    es: 'Actualízate y desafía a otros',
+  },
+  newsFrom: {
+    en: 'News from',
+    es: 'Noticias de',
+  },
+  newQuestionsComingOn: {
+    en: 'New questions coming on',
+    es: 'Nuevas preguntas en',
+  },
+  hours: {
+    en: 'hours',
+    es: 'horas',
+  },
+  minutes: {
+    en: 'minutes',
+    es: 'minutos',
   },
 };
-
 /// Interactions
 const interactions = {
   clickToCopy: {
