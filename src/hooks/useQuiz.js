@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import supabase from '../integrations/supabase'
 import time from '../utils/time';
+import { constants } from '../data/constants';
 
 const delayBetweenQuestionsSeconds = process.env.NODE_ENV === 'development' ? 0.5 : 3;
 
@@ -146,12 +147,12 @@ const useQuiz = () => {
   }
 
   const handleLoadLocalState = () => {
-    const previousSession = localStorage.getItem('previousSession') ? JSON.parse(localStorage.getItem('previousSession')) : null;
+    const previousSession = localStorage.getItem(constants.localStorageKeys.previousSession) ? JSON.parse(localStorage.getItem(constants.localStorageKeys.previousSession)) : null;
 
     // If current date is different from the date of the previous session, reset the questions data
     if(previousSession && time.getDateWithoutTimeString({date: new Date(previousSession.date)}) !== time.getDateWithoutTimeString()) {
       console.log('Resetting session data - date on session is different from current date');
-      localStorage.removeItem('previousSession');
+      localStorage.removeItem(constants.localStorageKeys.previousSession);
       return;
     }
 
@@ -186,7 +187,7 @@ const useQuiz = () => {
       // Update questions data
       const newQuestionsData = handleUpdateQuestionsData(currentQuestion.id, 'isCorrect', isCorrect)
 
-      localStorage.setItem('previousSession', JSON.stringify({
+      localStorage.setItem(constants.localStorageKeys.previousSession, JSON.stringify({
         date: time.getDateWithoutTimeString(),
         score: isCorrect ? score + 1 : score,
         isRevealed: true,
@@ -202,11 +203,11 @@ const useQuiz = () => {
   const handleQuestionFeedback = (feedback) => {
     // Update questions data
     const newQuestionsData = handleUpdateQuestionsData(currentQuestion.id, 'feedback', feedback);
-    const previousSession = localStorage.getItem('previousSession') ? JSON.parse(localStorage.getItem('previousSession')) : null;
+    const previousSession = localStorage.getItem(constants.localStorageKeys.previousSession) ? JSON.parse(localStorage.getItem(constants.localStorageKeys.previousSession)) : null;
 
     if (previousSession) {
       previousSession.questionsData = newQuestionsData;
-      localStorage.setItem('previousSession', JSON.stringify(previousSession));
+      localStorage.setItem(constants.localStorageKeys.previousSession, JSON.stringify(previousSession));
     }
   };
 

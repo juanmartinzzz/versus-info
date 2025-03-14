@@ -1,10 +1,11 @@
+import time from '../utils/time';
 import { motion } from 'framer-motion';
 import { QRCodeSVG } from 'qrcode.react';
 import { useEffect, useState } from 'react';
+import { constants } from '../data/constants';
 import supabase from '../integrations/supabase';
 import { Hexagon, Share2, Star, Trophy } from 'lucide-react';
 import { internationalization } from '../internationalization/internationalization';
-import time from '../utils/time';
 
 const upsertAnswer = async ({score, questionsData}) => {
   // Don't store answers for Dev environment
@@ -36,7 +37,7 @@ const ResultsScreen = ({ score, questionsData }) => {
       `🎯 ${translated.myScoreTodayWas} ${score}`,
       Object.values(questionsData).map(questionData => questionData.isCorrect ? '🟢' : '🔴').join(''),
       `${translated.canYouBeatMe}`,
-      `${import.meta.env.VITE_SHARE_URL}?lc=${localStorage.getItem('languageCode')}`,
+      `${import.meta.env.VITE_SHARE_URL}?lc=${localStorage.getItem(constants.localStorageKeys.languageCode)}`,
     ];
 
     const text = phrases.join(`\n`);

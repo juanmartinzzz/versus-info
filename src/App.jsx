@@ -2,6 +2,7 @@ import time from './utils/time.js';
 import useQuiz from './hooks/useQuiz.js';
 import { useState, useEffect } from 'react';
 import MenuBar from './components/MenuBar.jsx';
+import { constants } from './data/constants.js';
 import { motion, AnimatePresence } from 'framer-motion';
 import QuestionCard from './components/QuestionCard.jsx';
 import ResultsScreen from './components/ResultsScreen.jsx';
@@ -37,7 +38,7 @@ function App() {
     // Reset questions helper for development purposes
     const resetQueryParam = new URLSearchParams(window.location.search).get('reset');
     if (resetQueryParam) {
-      localStorage.removeItem('previousSession');
+      localStorage.removeItem(constants.localStorageKeys.previousSession);
     }
 
     // Simulate initial loading - quick for Dev environment

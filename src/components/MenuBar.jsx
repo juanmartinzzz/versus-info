@@ -3,14 +3,14 @@ import { constants } from '../data/constants';
 
 const changeLanguage = ({ lang , setSelectedLanguage }) => {
   setSelectedLanguage(lang);
-  localStorage.setItem('languageCode', lang);
+  localStorage.setItem(constants.localStorageKeys.languageCode, lang);
 
   // Ideally all re-renders post language change, but it's such a big change it's proly not worth using React for it.
   window.location.reload();
 }
 
 const MenuBar = () => {
-  const languageCode = localStorage.getItem('languageCode');
+  const languageCode = localStorage.getItem(constants.localStorageKeys.languageCode);
   const [selectedLanguage, setSelectedLanguage] = useState(languageCode);
 
   return (

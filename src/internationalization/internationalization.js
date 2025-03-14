@@ -1,3 +1,5 @@
+import { constants } from "../data/constants";
+
 /*
   receive a JSON object like:
 
@@ -24,7 +26,7 @@ const inter = ({texts}) => {
   const result = {};
 
   Object.keys(texts).forEach((key) => {
-    result[key] = texts[key][localStorage.getItem('languageCode')];
+    result[key] = texts[key][localStorage.getItem(constants.localStorageKeys.languageCode)];
   });
 
   return result;

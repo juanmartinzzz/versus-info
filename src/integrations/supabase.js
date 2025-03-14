@@ -1,4 +1,5 @@
 import time from '../utils/time';
+import { constants } from '../data/constants';
 import { createClient } from '@supabase/supabase-js';
 
 // Initialize the Supabase client with environment variables
@@ -111,7 +112,7 @@ const upsertAnswer = async ({answer}) => {
   try {
     // Get IP and geo data
     const ipGeoData = await getIpAndGeoData();
-    const localId = localStorage.getItem('localId');
+    const localId = localStorage.getItem(constants.localStorageKeys.localId);
 
     // Prepare the plan data with IP and geo information
     const enrichedData = {
