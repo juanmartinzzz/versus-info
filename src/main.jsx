@@ -4,7 +4,8 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { constants } from './data/constants.js';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import InsertQuestionsHelper from './screens/InsertQuestionsHelper.jsx';
+import InsertQuestionsHelper from './screens/insertQuestionsHelper/InsertQuestionsHelper.jsx';
+
 
 const router = createBrowserRouter([
   {
