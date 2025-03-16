@@ -23,7 +23,7 @@ function App() {
     progress,
     isComplete,
     isRevealed,
-    questionsData,
+    answersData,
     selectedAnswer,
     currentQuestion,
     handleAnswerSelect,
@@ -128,7 +128,7 @@ function App() {
                   ) : (
                     <ResultsScreen
                       score={score}
-                      questionsData={questionsData}
+                      answersData={answersData}
                     />
                   )}
                 </AnimatePresence>

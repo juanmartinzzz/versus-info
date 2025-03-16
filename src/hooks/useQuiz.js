@@ -112,7 +112,7 @@ const useQuiz = () => {
   const [score, setScore] = useState(0);
   const [isRevealed, setIsRevealed] = useState(false);
   const [revealTimer, setRevealTimer] = useState(null);
-  const [questionsData, setQuestionsData] = useState({});
+  const [answersData, setAnswersData] = useState({});
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [questions, setQuestions] = useState(defaultQuestions);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -121,15 +121,15 @@ const useQuiz = () => {
   const isComplete = currentQuestionIndex >= questions.length;
   const progress = (currentQuestionIndex / questions.length) * 100;
 
-  const handleUpdateQuestionsData = (questionId, property, value) => {
-    const newQuestionsData = {...questionsData, [questionId]: {
-      ...questionsData[questionId],
+  const handleUpdateAnswersData = (questionId, property, value) => {
+    const newAnswersData = {...answersData, [questionId]: {
+      ...answersData[questionId],
       [property]: value,
     }};
 
-    setQuestionsData(newQuestionsData);
+    setAnswersData(newAnswersData);
 
-    return newQuestionsData;
+    return newAnswersData;
   }
 
   useEffect(() => {
@@ -159,7 +159,7 @@ const useQuiz = () => {
     if(previousSession) {
       setScore(previousSession.score);
       setIsRevealed(previousSession.isRevealed);
-      setQuestionsData(previousSession.questionsData);
+      setAnswersData(previousSession.answersData);
       setSelectedAnswer(previousSession.selectedAnswer);
       setCurrentQuestionIndex(previousSession.currentQuestionIndex);
     }
@@ -185,14 +185,14 @@ const useQuiz = () => {
       }
 
       // Update questions data
-      const newQuestionsData = handleUpdateQuestionsData(currentQuestion.id, 'isCorrect', isCorrect)
+      const newAnswersData = handleUpdateAnswersData(currentQuestion.id, 'isCorrect', isCorrect)
 
       localStorage.setItem(constants.localStorageKeys.previousSession, JSON.stringify({
         date: time.getDateWithoutTimeString(),
         score: isCorrect ? score + 1 : score,
         isRevealed: true,
         selectedAnswer: answer,
-        questionsData: newQuestionsData,
+        answersData: newAnswersData,
         currentQuestionIndex,
       }));
     }, delayBetweenQuestionsSeconds * 1000)
@@ -202,11 +202,11 @@ const useQuiz = () => {
 
   const handleQuestionFeedback = (feedback) => {
     // Update questions data
-    const newQuestionsData = handleUpdateQuestionsData(currentQuestion.id, 'feedback', feedback);
+    const newAnswersData = handleUpdateAnswersData(currentQuestion.id, 'feedback', feedback);
     const previousSession = localStorage.getItem(constants.localStorageKeys.previousSession) ? JSON.parse(localStorage.getItem(constants.localStorageKeys.previousSession)) : null;
 
     if (previousSession) {
-      previousSession.questionsData = newQuestionsData;
+      previousSession.answersData = newAnswersData;
       localStorage.setItem(constants.localStorageKeys.previousSession, JSON.stringify(previousSession));
     }
   };
@@ -231,15 +231,15 @@ const useQuiz = () => {
     progress,
     isComplete,
     isRevealed,
+    answersData,
     selectedAnswer,
     currentQuestion,
     handleAnswerSelect,
     handleNextQuestion,
     currentQuestionIndex,
     handleLoadLocalState,
-    handleLoadQuestionsFromRemote,
-    questionsData,
     handleQuestionFeedback,
+    handleLoadQuestionsFromRemote,
   }
 }
 

@@ -7,7 +7,7 @@ import supabase from '../integrations/supabase';
 import { Hexagon, Share2, Star, Trophy } from 'lucide-react';
 import { internationalization } from '../internationalization/internationalization';
 
-const upsertAnswer = async ({score, questionsData}) => {
+const upsertAnswer = async ({score, answersData}) => {
   // Don't store answers for Dev environment
   if (import.meta.env.DEV) {
     console.log('DEV: not upserting answer');
@@ -16,26 +16,26 @@ const upsertAnswer = async ({score, questionsData}) => {
 
   const answer = {
     score,
-    questionsData,
+    answersData,
     relevant_date: time.getDateWithoutTimeString(),
   }
 
   supabase.upsertAnswer({answer});
 }
 
-const ResultsScreen = ({ score, questionsData }) => {
+const ResultsScreen = ({ score, answersData }) => {
   const translated = internationalization.getTranslated();
   const [shouldShowSharingInstructions, setShouldShowSharingInstructions] = useState(false);
 
   useEffect(() => {
-    // Store answer information with questionsData
-    upsertAnswer({score, questionsData});
+    // Store answer information with answersData
+    upsertAnswer({score, answersData});
   }, []);
 
   const shareResults = () => {
     const phrases = [
       `🎯 ${translated.myScoreTodayWas} ${score}`,
-      Object.values(questionsData).map(questionData => questionData.isCorrect ? '🟢' : '🔴').join(''),
+      Object.values(answersData).map(answerData => answerData.isCorrect ? '🟢' : '🔴').join(''),
       `${translated.canYouBeatMe}`,
       `${import.meta.env.VITE_SHARE_URL}?lc=${localStorage.getItem(constants.localStorageKeys.languageCode)}`,
     ];

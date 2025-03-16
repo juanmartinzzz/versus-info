@@ -67,14 +67,14 @@ const InsertQuestionsHelper = () => {
     });
   }
 
-  // Mark one and only one option as correct
+  // Mark one and only one option per questionas correct
   const markCorrectAnswer = (index, optionIndex) => {
-    // Unmark all other options
-    const newItems = items.map(item => ({
+    // Unmark all other options of the current question being edited
+    const newItems = items.map((item, itemIndex) => ({
       ...item,
-      options: item.options.map(option => ({
+      options: item.options.map((option, optionIndex) => ({
         ...option,
-        correct: false
+        correct: (itemIndex === index) ? false : option.correct
       }))
     }));
     newItems[index].options[optionIndex].correct = true;
