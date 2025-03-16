@@ -21,6 +21,7 @@ function App() {
   const {
     score,
     progress,
+    questions,
     isComplete,
     isRevealed,
     answersData,
@@ -128,6 +129,7 @@ function App() {
                   ) : (
                     <ResultsScreen
                       score={score}
+                      questions={questions}
                       answersData={answersData}
                     />
                   )}

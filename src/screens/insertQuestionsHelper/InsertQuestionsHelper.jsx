@@ -4,7 +4,7 @@ import { PlusIcon } from "lucide-react";
 import time from "../../utils/time";
 
 const defaultItems = [1,2,3,4,5].map(index => ({
-  id: index+1,
+  id: `${index}`,
   emoji: '',
   category: '',
   text: '',

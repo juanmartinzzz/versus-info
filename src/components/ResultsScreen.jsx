@@ -23,7 +23,7 @@ const upsertAnswer = async ({score, answersData}) => {
   supabase.upsertAnswer({answer});
 }
 
-const ResultsScreen = ({ score, answersData }) => {
+const ResultsScreen = ({ score, answersData, questions }) => {
   const translated = internationalization.getTranslated();
   const [shouldShowSharingInstructions, setShouldShowSharingInstructions] = useState(false);
 
@@ -33,10 +33,18 @@ const ResultsScreen = ({ score, answersData }) => {
   }, []);
 
   const shareResults = () => {
+    const questionCategoryAndAnswerIsCorrect = Object.keys(answersData).map(key => {
+      const questionCategory = questions.find(question => `${question.id}` === key).category;
+      const answerIsCorrect = answersData[key].isCorrect ? '🟢' : '🔴';
+
+      return `${answerIsCorrect} ${questionCategory.charAt(0).toUpperCase() + questionCategory.slice(1).toLowerCase()}`;
+    });
+
     const phrases = [
-      `🎯 ${translated.myScoreTodayWas} ${score}`,
-      Object.values(answersData).map(answerData => answerData.isCorrect ? '🟢' : '🔴').join(''),
-      `${translated.canYouBeatMe}`,
+      // `🎯 ${translated.myScoreTodayWas} ${score}`,
+      questionCategoryAndAnswerIsCorrect.join('\n'),
+      `${translated.myTotalIs}: ${score} - ${translated.catchUpAndBeatMe}`,
+      // `${translated.canYouBeatMe}`,
       `${import.meta.env.VITE_SHARE_URL}?lc=${localStorage.getItem(constants.localStorageKeys.languageCode)}`,
     ];
 

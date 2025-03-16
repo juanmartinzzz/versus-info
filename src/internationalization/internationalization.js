@@ -85,6 +85,14 @@ const resultsScreen = {
     en: 'My score today was',
     es: 'Mi puntaje hoy fue',
   },
+  myTotalIs: {
+    en: 'My total was',
+    es: 'Mi total fue',
+  },
+  catchUpAndBeatMe: {
+    en: 'catch up and beat me',
+    es: 'actualízate y supérame',
+  },
   canYouBeatMe: {
     en: 'Can you beat me?',
     es: 'Puedes superarme?',
