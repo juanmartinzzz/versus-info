@@ -1,10 +1,25 @@
-const getDateWithoutTimeString = ({date = new Date()} = {}) => {
-  return date.toISOString().split('T')[0];
+
+/**
+ * ALWAYS returns UTC time minus 5 hours.
+ * @returns {Date} The current local date and time.
+ */
+const getCurrentUtcDateTimeMinus5Hours = () => {
+  const date = new Date();
+  date.setHours(date.getHours() - 5);
+
+  return date;
 }
 
-const getTomorrowDateWithoutTimeString = () => {
-  const tomorrow = new Date();
+const getDateWithoutTimeString = ({date = getCurrentUtcDateTimeMinus5Hours()} = {}) => {
+  const dateWithoutTime = date.toISOString().split('T')[0];
+
+  return dateWithoutTime;
+}
+
+const getTomorrowDateWithoutTimeString = ({date = getCurrentUtcDateTimeMinus5Hours()} = {}) => {
+  const tomorrow = date;
   tomorrow.setDate(tomorrow.getDate() + 1);
+
   return tomorrow.toISOString().split('T')[0];
 }
 
@@ -13,7 +28,7 @@ const getTomorrowDateWithoutTimeString = () => {
  * @param {Date} date - The date to get the month and day of.
  * @returns {string} The month and day of the given date in a human-readable format.
  */
-const getHumanMonthShortAndDay = (date = new Date()) => {
+const getHumanMonthShortAndDay = ({date = getCurrentUtcDateTimeMinus5Hours()} = {}) => {
   const month = date.toLocaleString('default', { month: 'short' });
   const day = date.getDate();
   return `${month} ${day}`;
@@ -22,6 +37,7 @@ const getHumanMonthShortAndDay = (date = new Date()) => {
 const time = {
   getHumanMonthShortAndDay,
   getDateWithoutTimeString,
+  getCurrentUtcDateTimeMinus5Hours,
   getTomorrowDateWithoutTimeString,
 }
 
