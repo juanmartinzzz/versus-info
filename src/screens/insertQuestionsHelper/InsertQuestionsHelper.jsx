@@ -31,7 +31,7 @@ const defaultItems = [1,2,3,4,5].map(index => ({
 
 const tomorrowsDate = time.getTomorrowDateWithoutTimeString();
 
-const QuickDatePicker = ({setRelevantDate}) => {
+const QuickDatePicker = ({ relevantDate, setRelevantDate }) => {
   const dates = [
     {
       label: 'Today',
@@ -50,7 +50,7 @@ const QuickDatePicker = ({setRelevantDate}) => {
   return (
     <div className="mb-4">
       {dates.map((date, index) => (
-        <button key={index} onClick={() => setRelevantDate(date.date)} className="mr-2 p-1 px-4 bg-secondary text-white text-xs rounded-full cursor-pointer">
+        <button className={`mr-2 p-1 px-4 text-white text-xs rounded-full cursor-pointer ${date.date === relevantDate ? 'bg-accent1' : 'bg-gray-400'}`}  onClick={() => setRelevantDate(date.date)} key={index}>
           {date.label}
         </button>
       ))}
@@ -123,7 +123,7 @@ const InsertQuestionsHelper = () => {
       <h1 className="text-2xl font-bold mb-4">Insert Questions Helper</h1>
 
       {/* Date picker */}
-      <QuickDatePicker setRelevantDate={setRelevantDate} />
+      <QuickDatePicker relevantDate={relevantDate} setRelevantDate={setRelevantDate}/>
 
       <input type="date" value={relevantDate} onChange={({target}) => setRelevantDate(target.value)} className="p-2 bg-white border border-gray-300 w-full" />
 
