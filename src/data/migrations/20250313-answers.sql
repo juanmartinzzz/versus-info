@@ -7,7 +7,7 @@
     local_id VARCHAR(255) NOT NULL,
     relevant_date DATE NOT NULL,
     score INTEGER,
-    questions_data JSONB,
+    answers_data JSONB,
     ip_address TEXT,
     browser_info TEXT,
     geo_language TEXT,
@@ -20,6 +20,9 @@
     created_at TIMESTAMP WITH TIME ZONE DEFAULT now() NOT NULL,
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT now() NOT NULL
   );
+
+  -- Drop a unique index on local_id and relevant_date columns
+  DROP INDEX IF EXISTS answers_local_id_relevant_date_idx;
 
   -- Create a unique index on local_id and relevant_date columns
   CREATE UNIQUE INDEX IF NOT EXISTS answers_local_id_relevant_date_idx ON public.answers (local_id, relevant_date);

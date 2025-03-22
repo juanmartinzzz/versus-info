@@ -9,19 +9,23 @@ const defaultItems = [1,2,3,4,5].map(index => ({
   category: '',
   text: '',
   options: [
-      {
-        value: '',
-        correct: false
-      },
-      {
-        value: '',
-        correct: false
-      },
-      {
-        value: '',
-        correct: false
-      }
-    ]
+    {
+      value: '',
+      correct: false
+    },
+    {
+      value: '',
+      correct: false
+    },
+    {
+      value: '',
+      correct: false
+    }
+  ],
+  newsArticleUrl: '',
+  expandedInfo: '',
+  videoEmbed: '',
+  imageUrl: '',
   })
 );
 
@@ -154,10 +158,49 @@ const InsertQuestionsHelper = () => {
                 />
               </div>
             ))}
+
+            <div className="mb-2 w-full flex flex-col">
+              <span className="font-semibold leading-none">News Article URL</span>
+              <input
+                type="text"
+                value={items[index].newsArticleUrl}
+                onChange={({target}) => editItem({index, key: 'newsArticleUrl', value: target.value})}
+                className="px-2 py-0 border border-gray-300 w-full"
+              />
+            </div>
+
+            <div className="mb-2 w-full flex flex-col">
+              <span className="font-semibold leading-none">Video Embed URL</span>
+              <input
+                type="text"
+                value={items[index].videoEmbed}
+                onChange={({target}) => editItem({index, key: 'videoEmbed', value: target.value})}
+                className="px-2 py-0 border border-gray-300 w-full"
+              />
+            </div>
+
+            <div className="mb-2 w-full flex flex-col">
+              <span className="font-semibold leading-none">Image URL</span>
+              <input
+                type="text"
+                value={items[index].imageUrl}
+                onChange={({target}) => editItem({index, key: 'imageUrl', value: target.value})}
+                className="px-2 py-0 border border-gray-300 w-full"
+              />
+            </div>
+
+            <div className="mb-2 w-full flex flex-col">
+              <span className="font-semibold leading-none">Expanded Info</span>
+              <textarea
+                rows={4}
+                value={items[index].expandedInfo}
+                onChange={({target}) => editItem({index, key: 'expandedInfo', value: target.value})}
+                className="px-2 py-0 border border-gray-300 w-full"
+              />
+            </div>
           </div>
         ))}
       </div>
-
 
       {/* Insert question to supabase */}
       <button className="mt-8 w-full flex items-center gap-2 bg-accent1 text-white px-4 py-2 rounded-md" onClick={insertQuestion} >

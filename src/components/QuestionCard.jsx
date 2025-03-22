@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import NewsLink from './NewsLink';
 import { motion } from 'framer-motion';
 import { Timer, CheckCircle2, XCircle, ThumbsUp, ThumbsDown } from 'lucide-react';
 import { internationalization } from '../internationalization/internationalization';
@@ -110,6 +111,12 @@ const QuestionCard = ({
         )}
       </div>
 
+      {/* News link */}
+      {isRevealed && (
+        <NewsLink expandedInfo={question.expandedInfo} newsArticleUrl={question.newsArticleUrl} videoEmbed={question.videoEmbed} imageUrl={question.imageUrl} />
+      )}
+
+      {/* Options for the User to answer */}
       <div className="space-y-4">
         {question.options.map((option, index) => (
           <motion.button
@@ -141,6 +148,7 @@ const QuestionCard = ({
         ))}
       </div>
 
+      {/* Next question button */}
       {isRevealed && (
         <motion.button
           initial={{ opacity: 0, y: 10 }}

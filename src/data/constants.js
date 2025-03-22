@@ -3,7 +3,7 @@ const languages = ['en', 'es'];
 const localStorageKeys = {
   localId: 'localId',
   languageCode: 'languageCode',
-  previousSession: 'previousSessionV2',
+  previousSession: 'previousSessionV4',
 }
 
 const constants = {

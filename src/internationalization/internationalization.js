@@ -77,6 +77,14 @@ const interactions = {
     en: 'Check your results',
     es: 'Ir a resultados',
   },
+  moreInfo: {
+    en: 'More info',
+    es: 'Más información',
+  },
+  imageFrom: {
+    en: 'Image from',
+    es: 'Imagen de',
+  },
 };
 
 // Results screen
@@ -89,9 +97,9 @@ const resultsScreen = {
     en: 'My total was',
     es: 'Mi total fue',
   },
-  catchUpAndBeatMe: {
-    en: 'catch up and beat me',
-    es: 'actualízate y supérame',
+  playAndCatchUpWithTheNews: {
+    en: 'Play and catch up with the news',
+    es: 'Juega y entérate de las noticias',
   },
   canYouBeatMe: {
     en: 'Can you beat me?',

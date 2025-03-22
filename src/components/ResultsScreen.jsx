@@ -43,7 +43,7 @@ const ResultsScreen = ({ score, answersData, questions }) => {
     const phrases = [
       // `🎯 ${translated.myScoreTodayWas} ${score}`,
       questionCategoryAndAnswerIsCorrect.join('\n'),
-      `${translated.myTotalIs}: ${score} - ${translated.catchUpAndBeatMe}`,
+      `${translated.myTotalIs}: ${score} - ${translated.playAndCatchUpWithTheNews}`,
       // `${translated.canYouBeatMe}`,
       `${import.meta.env.VITE_SHARE_URL}?lc=${localStorage.getItem(constants.localStorageKeys.languageCode)}`,
     ];
