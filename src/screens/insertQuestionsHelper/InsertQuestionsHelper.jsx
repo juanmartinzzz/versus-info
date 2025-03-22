@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import supabase from "../../integrations/supabase";
-import { PlusIcon } from "lucide-react";
+import { Check, PlusIcon, SaveIcon } from "lucide-react";
 import time from "../../utils/time";
 
 const defaultItems = [1,2,3,4,5].map(index => ({
@@ -62,6 +62,7 @@ const InsertQuestionsHelper = () => {
   const [error, setError] = useState(null);
   const [items, setItems] = useState(defaultItems);
   const [indexFocused, setIndexFocused] = useState(null);
+  const [itemsSaved, setItemsSaved] = useState(defaultItems);
   const [relevantDate, setRelevantDate] = useState(tomorrowsDate);
   const textareaRows = { focused: 12, unfocused: 4 };
 
@@ -75,7 +76,9 @@ const InsertQuestionsHelper = () => {
     });
   }, [relevantDate]);
 
-  const insertQuestion = () => {
+  const saveQuestions = () => {
+    setItemsSaved(items);
+
     supabase.upsertQuestion({
       question: {
         relevantDate,
@@ -245,10 +248,33 @@ const InsertQuestionsHelper = () => {
       </div>
 
       {/* Insert question to supabase */}
-      <button className="mt-8 w-full flex items-center gap-2 bg-accent1 text-white px-4 py-2 rounded-md" onClick={insertQuestion} >
-        <PlusIcon className="w-4 h-4" />
-        Insert Question
-      </button>
+      <div className="mt-8 fixed bottom-[32px] right-[32px]">
+        <button className="flex items-center gap-2 bg-accent1 text-white font-bold px-4 py-2 rounded-md shadow-md cursor-pointer" onClick={saveQuestions} >
+          {JSON.stringify(items) === JSON.stringify(itemsSaved) ?
+            <>
+              <Check className="w-6 h-6" />
+              <span>Saved</span>
+            </>
+          :
+            <>
+              <SaveIcon className="w-6 h-6" />
+              <span>Save Questions</span>
+            </>
+          }
+        </button>
+      </div>
+
+      {/* Textarea where the questions are displayed in JSON format */}
+      <div className="mt-8">
+        <span className="font-semibold leading-none">Questions in JSON format<br />(este campo es pa' jodas técnicas)</span>
+
+        <textarea
+          rows={textareaRows.unfocused}
+          className="p-2 bg-white w-full leading-none"
+          value={JSON.stringify(items, null, 2)}
+          readOnly
+        />
+      </div>
     </div>
   );
 };
