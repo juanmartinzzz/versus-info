@@ -55,6 +55,8 @@ const header = {
     es: 'minutos',
   },
 };
+
+
 /// Interactions
 const interactions = {
   clickToCopy: {
@@ -87,7 +89,8 @@ const interactions = {
   },
 };
 
-// Results screen
+
+/// Results screen
 const resultsScreen = {
   myScoreTodayWas: {
     en: 'My score today was',
@@ -151,9 +154,60 @@ const resultsScreen = {
   // },
 }
 
+
+/// Categories
+const categoryNames = {
+  politics: {
+    en: 'Politics',
+    es: 'Política',
+  },
+  sports: {
+    en: 'Sports',
+    es: 'Deportes',
+  },
+  science: {
+    en: 'Science',
+    es: 'Ciencia',
+  },
+  technology: {
+    en: 'Technology',
+    es: 'Tecnología',
+  },
+  showbiz: {
+    en: 'Showbiz',
+    es: 'Farándula',
+  },
+  business: {
+    en: 'Business',
+    es: 'Negocios',
+  },
+  health: {
+    en: 'Health',
+    es: 'Salud',
+  },
+  climate: {
+    en: 'Climate',
+    es: 'Clima',
+  },
+  finance: {
+    en: 'Finance',
+    es: 'Finanzas',
+  },
+  art: {
+    en: 'Art',
+    es: 'Arte',
+  },
+  world: {
+    en: 'World',
+    es: 'Mundo',
+  },
+}
+
+
 const allGlobalTexts = {
   ...header,
   ...interactions,
+  ...categoryNames,
   ...resultsScreen,
 };
 

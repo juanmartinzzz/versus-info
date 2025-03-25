@@ -1,12 +1,15 @@
-import { useEffect, useState } from "react";
-import supabase from "../../integrations/supabase";
-import { Check, PlusIcon, SaveIcon } from "lucide-react";
 import time from "../../utils/time";
+import { useEffect, useState } from "react";
+import SectionHeader from "./SectionHeader";
+import { Check, SaveIcon } from "lucide-react";
+import CategorySelector from "./CategorySelector";
+import supabase from "../../integrations/supabase";
 
 const defaultItems = [1,2,3,4,5].map(index => ({
   id: `${index}`,
   emoji: '',
   category: '',
+  categoryId: '',
   text: '',
   options: [
     {
@@ -144,30 +147,12 @@ const InsertQuestionsHelper = () => {
             </div>
 
             <div className="flex flex-wrap p-4-md rounded-md shadow-md bg-white p-4">
-              <div className="mb-2 w-[66%] flex flex-col">
-                <span className="font-semibold leading-none">Category</span>
+              <SectionHeader title="Pregunta y opciones de respuesta" />
 
-                <input
-                  type="text"
-                  value={items[index].category}
-                  onChange={({target}) => editItem({index, key: 'category', value: target.value})}
-                  className="px-2 py-0 border border-gray-300"
-                />
-              </div>
-
-              <div className="mb-2 w-[33%] flex flex-col">
-                <span className="font-semibold leading-none">Emoji</span>
-
-                <input
-                  type="text"
-                  value={items[index].emoji}
-                  onChange={({target}) => editItem({index, key: 'emoji', value: target.value})}
-                  className="px-2 py-0 border border-gray-300"
-                />
-              </div>
+              <CategorySelector categoryId={items[index].categoryId} index={index} editItem={editItem} />
 
               <div className="mb-2 w-full flex flex-col">
-                <span className="font-semibold leading-none">Question</span>
+                <span className="font-semibold leading-none">Pregunta</span>
 
                 <textarea
                   rows={indexFocused === index ? textareaRows.focused : textareaRows.unfocused}
@@ -180,59 +165,34 @@ const InsertQuestionsHelper = () => {
               </div>
 
               {/* Three text inputs for the 3 possible answers to the question */}
-              {Array.from({ length: 3 }, (_, answerIndex) => (
-                <div key={answerIndex} className="mb-2 font-semibold w-full">
-                  {/* Label and checkbox to mark answer as correct */}
-                  <span className="leading-none">Option {answerIndex + 1}</span>
-                  <span className="ml-2 leading-none">Correct</span>
-                  <input
-                    type="checkbox"
-                    className="ml-2 w-5 h-5 text-accent1 border-gray-300 focus:ring-accent1 focus:ring-2"
-                    checked={items[index].options[answerIndex].correct}
-                    onChange={() => markCorrectAnswer(index, answerIndex)}
-                  />
+              <div className="mb-8 w-full">
+                {Array.from({ length: 3 }, (_, answerIndex) => (
+                  <div key={answerIndex} className="mb-2 font-semibold w-full">
+                    {/* Label and checkbox to mark answer as correct */}
+                    <span className="leading-none">Opción {answerIndex + 1}</span>
+                    <span className="ml-2 leading-none">Correcta</span>
+                    <input
+                      type="checkbox"
+                      className="ml-2 w-5 h-5 text-accent1 border-gray-300 focus:ring-accent1 focus:ring-2"
+                      checked={items[index].options[answerIndex].correct}
+                      onChange={() => markCorrectAnswer(index, answerIndex)}
+                    />
 
-                  <input
-                    type="text"
-                    value={items[index].options[answerIndex].value}
-                    onChange={({target}) => editItemOption({index, optionIndex: answerIndex, key: 'value', value: target.value})}
-                    className="px-2 py-0 border border-gray-300 w-full"
-                  />
-                </div>
-              ))}
-
-              <div className="mb-2 w-full flex flex-col">
-                <span className="font-semibold leading-none">News Article URL</span>
-                <input
-                  type="text"
-                  value={items[index].newsArticleUrl}
-                  onChange={({target}) => editItem({index, key: 'newsArticleUrl', value: target.value})}
-                  className="px-2 py-0 border border-gray-300 w-full"
-                />
+                    <input
+                      type="text"
+                      value={items[index].options[answerIndex].value}
+                      onChange={({target}) => editItemOption({index, optionIndex: answerIndex, key: 'value', value: target.value})}
+                      className="px-2 py-0 border border-gray-300 w-full"
+                    />
+                  </div>
+                ))}
               </div>
 
-              <div className="mb-2 w-full flex flex-col">
-                <span className="font-semibold leading-none">Video Embed URL</span>
-                <input
-                  type="text"
-                  value={items[index].videoEmbed}
-                  onChange={({target}) => editItem({index, key: 'videoEmbed', value: target.value})}
-                  className="px-2 py-0 border border-gray-300 w-full"
-                />
-              </div>
+              <SectionHeader title="Noticia que sale tras responder" />
 
               <div className="mb-2 w-full flex flex-col">
-                <span className="font-semibold leading-none">Image URL</span>
-                <input
-                  type="text"
-                  value={items[index].imageUrl}
-                  onChange={({target}) => editItem({index, key: 'imageUrl', value: target.value})}
-                  className="px-2 py-0 border border-gray-300 w-full"
-                />
-              </div>
+                <span className="font-semibold leading-none">Noticia muy resumida (todavía es necesario escribirla manualmente)</span>
 
-              <div className="mb-2 w-full flex flex-col">
-                <span className="font-semibold leading-none">Expanded Info</span>
                 <textarea
                   rows={indexFocused === index ? textareaRows.focused : textareaRows.unfocused}
                   value={items[index].expandedInfo}
@@ -241,6 +201,53 @@ const InsertQuestionsHelper = () => {
                   onBlur={() => setIndexFocused(null)}
                   className="px-2 py-0 border border-gray-300 w-full leading-none"
                 />
+              </div>
+
+              <div className="mb-2 w-full flex flex-col">
+                <span className="font-semibold leading-none">URL de la noticia</span>
+
+                <input
+                  type="text"
+                  value={items[index].newsArticleUrl}
+                  onChange={({target}) => editItem({index, key: 'newsArticleUrl', value: target.value})}
+                  className="px-2 py-0 text-sm border border-gray-300 w-full"
+                />
+              </div>
+
+              {/* Video embed preview and input */}
+              <div className="w-[50%]">
+                <div className="w-full flex flex-col">
+                  <span className="font-semibold leading-none">URL de un video</span>
+
+                  <input
+                    type="text"
+                    value={items[index].videoEmbed}
+                    onChange={({target}) => editItem({index, key: 'videoEmbed', value: target.value})}
+                    className="px-2 py-0 text-sm border border-gray-300 w-full"
+                  />
+                </div>
+
+                <div className="mb-2 w-full h-24 flex flex-col overflow-hidden">
+                  <iframe src={items[index].videoEmbed} className="w-full h-96" />
+                </div>
+              </div>
+
+              {/* Image preview and input */}
+              <div className="w-[50%]">
+                <div className="mb-2 w-full flex flex-col">
+                  <span className="font-semibold leading-none">URL de una imagen</span>
+
+                  <input
+                    type="text"
+                    value={items[index].imageUrl}
+                    onChange={({target}) => editItem({index, key: 'imageUrl', value: target.value})}
+                    className="px-2 py-0 text-sm border border-gray-300 w-full"
+                  />
+                </div>
+
+                <div className="mb-2 w-full h-24 flex flex-col overflow-hidden">
+                  <img src={items[index].imageUrl} className="w-full h-full object-contain" />
+                </div>
               </div>
             </div>
           </div>
