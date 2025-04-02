@@ -61,6 +61,28 @@ const QuickDatePicker = ({ relevantDate, setRelevantDate }) => {
   )
 }
 
+const DirectJsonInput = ({index, editItem}) => {
+  const [value, setValue] = useState('');
+
+  // Edit any matching properties in JSON given by User
+  useEffect(() => {
+    try {
+      const json = JSON.parse(value);
+      ['text', 'options', 'expandedInfo', 'newsArticleUrl', 'videoEmbed', 'imageUrl'].forEach(key => {
+        if(json[key]) {
+          editItem({index, key, value: json[key]});
+        }
+      });
+    } catch (e) {}
+  }, [value]);
+
+  return (
+    <div>
+      <textarea rows={1} className="w-full text-xs" value={value} onChange={({target}) => setValue(target.value)} />
+    </div>
+  )
+}
+
 const InsertQuestionsHelper = () => {
   const [error, setError] = useState(null);
   const [items, setItems] = useState(defaultItems);
@@ -250,6 +272,9 @@ const InsertQuestionsHelper = () => {
                 </div>
               </div>
             </div>
+
+            {/* Special JSON input */}
+            <DirectJsonInput index={index} editItem={editItem} />
           </div>
         ))}
       </div>
