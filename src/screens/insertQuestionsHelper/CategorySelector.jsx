@@ -7,11 +7,13 @@ const CategorySelector = ({ categoryId, index, editItem }) => {
   return (
     <div className="mb-2 w-full flex flex-wrap gap-1">
       {constants.categories.map((category) => (
-        <div key={category.id} className={`rounded-full py-0 px-2 text-sm ${categoryId === category.id ? 'bg-accent1 text-white' : 'bg-gray-200'}`}
+        <div
+          key={category.id}
+          className={`rounded-full py-0 px-2 text-sm ${categoryId === category.id ? 'bg-accent1 text-white' : 'bg-gray-200'} cursor-pointer`}
           onClick={() => editItem({index, key: 'categoryId', value: category.id})}
         >
           <span>{translated[category.nameKey]}</span>
-          {category.defaultEmoji && <span className="ml-2">{category.defaultEmoji}</span>}
+          <span className="ml-2">{category.defaultEmoji}</span>
         </div>
       ))}
     </div>

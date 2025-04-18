@@ -113,6 +113,11 @@ const InsertQuestionsHelper = () => {
   }
 
   const editItem = ({index, key, value}) => {
+    // If editing a video, replace instances of "watch?v=" with "embed/"
+    if(key === 'videoEmbed') {
+      value = value.replace('watch?v=', 'embed/');
+    }
+
     setItems(prevItems => {
       const newItems = [...prevItems];
       newItems[index] = {...newItems[index], [key]: value};

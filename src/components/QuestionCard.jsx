@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import NewsLink from './NewsLink';
 import { motion } from 'framer-motion';
+import { constants } from '../data/constants';
 import { Timer, CheckCircle2, XCircle, ThumbsUp, ThumbsDown } from 'lucide-react';
 import { internationalization } from '../internationalization/internationalization';
 
@@ -82,27 +83,30 @@ const QuestionCard = ({
       exit="exit"
       className="bg-white backdrop-blur-xs rounded-md p-6 shadow-lg"
     >
+      {/* Category, emoji and feedback buttons */}
       <motion.div
         variants={itemVariants}
         className="flex justify-between gap-2 text-info mb-4"
       >
         <div className="flex items-center gap-2">
           <span className="text-xl">{question.emoji}</span>
+          <span className="text-xl">{constants.categories.find(category => category.id === question.categoryId)?.defaultEmoji}</span>
           <span className="text-xl font-semibold">{question.category}</span>
+          <span className="text-xl font-semibold uppercase">{translated[constants.categories.find(category => category.id === question.categoryId)?.nameKey]}</span>
         </div>
 
         <FeedbackButtons />
       </motion.div>
 
-      <motion.h2
+      <motion.div
+        translate="no"
         variants={itemVariants}
         className="text-2xl text-primary font-semibold leading-[1.066]"
       >
         {question.text}
-      </motion.h2>
+      </motion.div>
 
       <div className="py-2 ml-auto flex items-center gap-2 w-full">
-        {/* {true && ( */}
         {selectedAnswer && !isRevealed && (
           <>
             <Timer className="w-4 h-4 text-accent1 animate-pulse" />
@@ -133,7 +137,7 @@ const QuestionCard = ({
             disabled={isRevealed}
           >
             <span className="relative z-10 flex items-center justify-between">
-              <span>{option.value}</span>
+              <span translate="no">{option.value}</span>
               {isRevealed && (
                 option.correct ? (
                   <CheckCircle2 className="w-5 h-5 text-success" />

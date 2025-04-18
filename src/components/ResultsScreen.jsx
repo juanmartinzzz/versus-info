@@ -34,7 +34,9 @@ const ResultsScreen = ({ score, answersData, questions }) => {
 
   const shareResults = () => {
     const questionCategoryAndAnswerIsCorrect = Object.keys(answersData).map(key => {
-      const questionCategory = questions.find(question => `${question.id}` === key).category;
+      const questionCategoryId = questions.find(question => `${question.id}` === key).categoryId;
+      const categoryNameKey = constants.categories.find(category => category.id === questionCategoryId).nameKey;
+      const questionCategory = translated[categoryNameKey];
       const answerIsCorrect = answersData[key].isCorrect ? '🟢' : '🔴';
 
       return `${answerIsCorrect} ${questionCategory.charAt(0).toUpperCase() + questionCategory.slice(1).toLowerCase()}`;

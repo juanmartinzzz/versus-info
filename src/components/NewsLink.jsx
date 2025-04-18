@@ -10,7 +10,7 @@ const NewsLink = ({ expandedInfo = null, newsArticleUrl = null, videoEmbed = nul
     <motion.div
       initial={{ opacity: 0, height: 0 }}
       animate={{ opacity: 1, height: 'auto' }}
-      transition={{ duration: 4, delay: 1 }}
+      transition={{ duration: 1.9, delay: 1 }}
     >
       {expandedInfo && (
         <div className="mb-4 text-sm">
@@ -45,7 +45,7 @@ const NewsLink = ({ expandedInfo = null, newsArticleUrl = null, videoEmbed = nul
         <div className="mb-4 flex justify-center items-center">
           <div className="flex justify-center items-center gap-2 border border-danger rounded-full p-1 pr-4">
             <div className="bg-danger rounded-full p-1.5">
-              <Play className="w-6 h-6 text-white test" />
+              <Play className="w-6 h-6 text-white" />
             </div>
 
             <div className="text-md font-bold">

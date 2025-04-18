@@ -9,102 +9,10 @@ const defaultQuestions = [
   {
     category: 'Technology',
     emoji: '💻',
-    text: 'Which company recently announced a major breakthrough in quantum computing?',
+    text: 'Más preguntas vendrán pronto ⏱',
     options: [
-      {
-        value: 'IBM',
-        correct: true
-      },
-      {
-        value: 'Google',
-        correct: false
-      },
-      {
-        value: 'Microsoft',
-        correct: false
-      }
     ],
     correctAnswer: 'IBM'
-  },
-  {
-    category: 'Politics',
-    emoji: '🏛️',
-    text: 'Which country recently joined NATO as its newest member?',
-    options: [
-      {
-        value: 'Ukraine',
-        correct: false
-      },
-      {
-        value: 'Sweden',
-        correct: false
-      },
-      {
-        value: 'Finland',
-        correct: true
-      }
-    ],
-    correctAnswer: 'Finland'
-  },
-  {
-    category: 'Sports',
-    emoji: '⚽',
-    text: 'Which team won the latest Super Bowl?',
-    options: [
-      {
-        value: 'San Francisco 49ers',
-        correct: false
-      },
-      {
-        value: 'Kansas City Chiefs',
-        correct: true
-      },
-      {
-        value: 'Baltimore Ravens',
-        correct: false
-      }
-    ],
-    correctAnswer: 'Kansas City Chiefs'
-  },
-  {
-    category: 'Science',
-    emoji: '🔬',
-    text: 'What was the name of the recent NASA mission to return asteroid samples to Earth?',
-    options: [
-      {
-        value: 'OSIRIS-REx',
-        correct: true
-      },
-      {
-        value: 'Artemis',
-        correct: false
-      },
-      {
-        value: 'Perseverance',
-        correct: false
-      }
-    ],
-    correctAnswer: 'OSIRIS-REx'
-  },
-  {
-    category: 'Entertainment',
-    emoji: '🎬',
-    text: 'Which film won the Academy Award for Best Picture in 2024?',
-    options: [
-      {
-        value: 'Oppenheimer',
-        correct: true
-      },
-      {
-        value: 'Barbie',
-        correct: false
-      },
-      {
-        value: 'Poor Things',
-        correct: false
-      }
-    ],
-    correctAnswer: 'Oppenheimer'
   }
 ];
 
