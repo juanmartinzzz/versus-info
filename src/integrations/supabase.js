@@ -227,12 +227,178 @@ const getQuestionById = async ({id}) => {
 };
 
 const supabase = {
-  upsertAnswer,
-  upsertQuestion,
-  deleteQuestions,
-  getQuestionById,
-  getRelevantQuestion,
-  getRelevantQuestionByDate
+  /**
+   * @param {Object} answers - The answers object to save
+   * @returns {Promise} - The result of the upsert operation
+   */
+  upsertAnswer: async ({answer}) => {
+    try {
+      // Get IP and geo data
+      const ipGeoData = await getIpAndGeoData();
+      const localId = localStorage.getItem(constants.localStorageKeys.localId);
+
+      // Prepare the plan data with IP and geo information
+      const enrichedData = {
+        ...transformKeysToUnderscores({data: answer}),
+        ...transformKeysToUnderscores({data: ipGeoData}),
+        local_id: localId,
+      };
+
+      const { data, error } = await supabaseClient
+        .from('answers')
+        .upsert(enrichedData, {
+          onConflict: ['local_id', 'relevant_date'],
+          returning: 'minimal' // Only return the minimal data needed
+        });
+
+      if (error) throw error;
+
+      return transformKeysToCamelCase({data});
+    } catch (error) {
+      console.error('Error upserting answers:', error);
+      return { data: null, error };
+    }
+  },
+  /**
+   * @param {Object} questions - The questions object to save
+   * @returns {Promise} - The result of the upsert operation
+   */
+  upsertQuestion: async ({question}) => {
+    try {
+      const { data, error } = await supabaseClient
+        .from('questions')
+        .upsert(transformKeysToUnderscores({data: question}), {
+          onConflict: 'relevant_date',
+          returning: 'minimal' // Only return the minimal data needed
+        });
+
+      if (error) throw error;
+
+      return transformKeysToCamelCase({data});
+    } catch (error) {
+      console.error('Error upserting questions:', error);
+      return { data: null, error };
+    }
+  },
+  /**
+   * @param {string} id - The ID of the question to delete
+   * @returns {Promise} - The result of the delete operation
+   */
+  deleteQuestions: async ({id}) => {
+    try {
+      const { data, error } = await supabaseClient
+        .from('questions')
+        .delete()
+        .eq('id', id);
+
+      if (error) throw error;
+
+      return { data, error: null };
+    } catch (error) {
+      console.error('Error deleting questions:', error);
+      return { data: null, error };
+    }
+  },
+  /**
+   * @param {string} id - The ID of the question to fetch
+   * @returns {Promise} - The result of the fetch operation
+   */
+  getQuestionById: async ({id}) => {
+    try {
+      const { data, error } = await supabaseClient
+        .from('questions')
+        .select('*')
+        .eq('id', id)
+        .single();
+
+      if (error) throw error;
+
+      return { data: transformKeysToCamelCase({data}), error: null };
+    } catch (error) {
+      console.error('Error fetching question:', error);
+      return { data: null, error };
+    }
+  },
+  /**
+   * @returns {Promise} - The result of the fetch operation
+   */
+  getRelevantQuestion: async () => {
+    try {
+      const { data, error } = await supabaseClient
+        .from('questions')
+        .select('*')
+        .eq('relevant_date', time.getDateWithoutTimeString())
+        .limit(1);
+
+      if(error) throw error;
+
+      if(data.length === 0) {
+        throw new Error('No question found');
+      }
+
+      const question = data[0];
+      return transformKeysToCamelCase({data: question});
+    } catch (error) {
+      console.error('Error fetching relevant question:', error);
+      return { data: null, error };
+    }
+  },
+  /**
+   * @param {string} date - The date of the question to fetch
+   * @returns {Promise} - The result of the fetch operation
+   */
+  getRelevantQuestionByDate: async ({date}) => {
+    try {
+      const { data, error } = await supabaseClient
+        .from('questions')
+        .select('*')
+        .eq('relevant_date', date)
+        .limit(1);
+
+      if (error) throw error;
+
+      const question = data[0];
+      return transformKeysToCamelCase({data: question});
+    } catch (error) {
+      console.error('Error fetching relevant question:', error);
+      return { data: null, error };
+    }
+  },
+  comment: {
+    /**
+     * @param {Object} comment - The comment object to save
+     * @returns {Promise} - The result of the upsert operation
+     */
+    upsert: async ({comment}) => {
+      try {
+        // Get IP and geo data
+        const ipGeoData = await getIpAndGeoData();
+        const localId = localStorage.getItem(constants.localStorageKeys.localId);
+
+        // Enrich data
+        const enrichedData = {
+          ...transformKeysToUnderscores({data: comment}),
+          ...transformKeysToUnderscores({data: ipGeoData}),
+          local_id: localId,
+          relevant_date: time.getDateWithoutTimeString(),
+        };
+
+        const { data, error } = await supabaseClient
+          .from('comments')
+          .upsert(enrichedData, {
+            onConflict: ['id'],
+            returning: 'minimal' // Only return the minimal data needed
+          });
+
+        if (error) throw error;
+
+        return transformKeysToCamelCase({data});
+      } catch (error) {
+        console.error('Error upserting comments:', error);
+        return { data: null, error };
+      }
+    }
+  },
 }
 
 export default supabase;

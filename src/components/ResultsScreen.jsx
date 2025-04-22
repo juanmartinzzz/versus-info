@@ -6,6 +6,7 @@ import { constants } from '../data/constants';
 import supabase from '../integrations/supabase';
 import { Hexagon, Share2, Star, Trophy } from 'lucide-react';
 import { internationalization } from '../internationalization/internationalization';
+import UserFeedback from './UserFeedback';
 
 const upsertAnswer = async ({score, answersData}) => {
   // Don't store answers for Dev environment
@@ -131,6 +132,10 @@ const ResultsScreen = ({ score, answersData, questions }) => {
         {shouldShowSharingInstructions ? <SharingInstructions /> : <ShareResultsButton />}
 
         <p className="text-md text-secondary font-semibold leading-tight">{translated.soTheyCanAlsoLearnAboutTopCurrentEvents}</p>
+      </div>
+
+      <div className=" mt-8 flex flex-col gap-4">
+        <UserFeedback />
       </div>
 
       <motion.div

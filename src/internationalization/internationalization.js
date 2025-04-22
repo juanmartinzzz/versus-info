@@ -204,9 +204,35 @@ const categoryNames = {
 }
 
 
+/// Send feedback
+const sendFeedback = {
+  sendFeedback: {
+    en: 'Send Feedback',
+    es: 'Enviar comentarios',
+  },
+  howCanWeContactYouOptional: {
+    en: 'How can we contact you? (Optional)',
+    es: '¿Cómo podemos contactarte? (Opcional)',
+  },
+  whatCouldWeDoToMakeYourExperienceBetter: {
+    en: 'What could we do to make your experience better?',
+    es: '¿Qué podríamos hacer para mejorar tu experiencia?',
+  },
+  thanksForWriting: {
+    en: 'Thanks for writing',
+    es: 'Gracias por escribirnos',
+  },
+  yourInputIsWhatHelpsUsImprove: {
+    en: 'Your input is what helps us improve',
+    es: 'Tus comentarios son lo que nos ayuda a mejorar',
+  },
+}
+
+
 const allGlobalTexts = {
   ...header,
   ...interactions,
+  ...sendFeedback,
   ...categoryNames,
   ...resultsScreen,
 };
