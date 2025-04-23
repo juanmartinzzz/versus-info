@@ -206,13 +206,25 @@ const categoryNames = {
 
 /// Send feedback
 const sendFeedback = {
+  shareYourFeedback: {
+    en: 'Share Your Feedback',
+    es: 'Comparte tus comentarios',
+  },
   sendFeedback: {
     en: 'Send Feedback',
     es: 'Enviar comentarios',
   },
+  weWouldLoveToHearYourSuggestions: {
+    en: "We'd love to hear your suggestions...",
+    es: 'Nos encantaría oir tus sugerencias...',
+  },
   howCanWeContactYouOptional: {
     en: 'How can we contact you? (Optional)',
     es: '¿Cómo podemos contactarte? (Opcional)',
+  },
+  emailPhoneOrSocialMediaHandle: {
+    en: 'Email, social media handle, phone - anything you want',
+    es: 'Correo, usuario en redes sociales, teléfono - lo que quieras',
   },
   whatCouldWeDoToMakeYourExperienceBetter: {
     en: 'What could we do to make your experience better?',

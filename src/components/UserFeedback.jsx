@@ -57,7 +57,7 @@ const UserFeedback = () => {
 
   return (
     <div>
-      <h2 className="text-xl font-bold mb-4 text-accent3">Share Your Feedback</h2>
+      <h2 className="text-xl font-bold mb-4 text-accent3">{translated.shareYourFeedback}</h2>
 
       {/* <div className="mb-4">
         <label htmlFor="comment" className="block text-sm font-medium text-gray-700 mb-1">
@@ -87,7 +87,7 @@ const UserFeedback = () => {
           className="w-full px-3 py-2 text-secondary border"
           value={formData.improvementSuggestion}
           onChange={handleChange}
-          placeholder="We'd love to hear your suggestions..."
+          placeholder={translated.weWouldLoveToHearYourSuggestions}
         ></textarea>
       </div>
 
@@ -103,7 +103,7 @@ const UserFeedback = () => {
           className="w-full px-3 py-2 text-secondary border"
           value={formData.contactInfo}
           onChange={handleChange}
-          placeholder="Email, phone, social media handle, etc."
+          placeholder={translated.emailPhoneOrSocialMediaHandle}
         />
       </div>
 
