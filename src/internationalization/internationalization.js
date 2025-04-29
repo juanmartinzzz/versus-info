@@ -197,9 +197,17 @@ const categoryNames = {
     en: 'Art',
     es: 'Arte',
   },
-  world: {
-    en: 'World',
-    es: 'Mundo',
+  society: {
+    en: 'Society',
+    es: 'Sociedad',
+  },
+  oddities: {
+    en: 'Oddities',
+    es: 'Insólito',
+  },
+  trending: {
+    en: 'Trending',
+    es: 'Tendencia',
   },
 }
 

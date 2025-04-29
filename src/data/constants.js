@@ -59,14 +59,19 @@ const categories = [
   },
   {
     id: '11',
-    nameKey: 'world',
+    nameKey: 'society',
     defaultEmoji: '🌏',
   },
-  // {
-  //   id: '13',
-  //   nameKey: 'other',
-  //   defaultEmoji: '',
-  // },
+  {
+    id: '12',
+    nameKey: 'oddities',
+    defaultEmoji: '🤔',
+  },
+  {
+    id: '13',
+    nameKey: 'trending',
+    defaultEmoji: '🔥',
+  },
 ]
 
 const constants = {
