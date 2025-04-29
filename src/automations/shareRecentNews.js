@@ -3,6 +3,8 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import telegram from '../integrations/telegram.js';
 
+const maxNumberOfNewsToShare = 25;
+
 
 /// Read from recentNews.json file in the same directory as this Node.js script
 const getLocalData = () => {
@@ -26,13 +28,12 @@ const setLocalData = ({localData}) => {
 
 /// Main method
 const shareRecentNews = async () => {
-  const maxNewsToShare = 5;
   const localData = getLocalData();
 
   const newsPieceIdsToShare = Object.keys(localData.previousNews).filter(newsPieceKey => !localData.sharedNewsIds.includes(newsPieceKey));
-  console.log(`Total news pieces to share: ${newsPieceIdsToShare.length} (but will share max ${maxNewsToShare})`);
+  console.log(`Total news pieces to share: ${newsPieceIdsToShare.length} (but will share max ${maxNumberOfNewsToShare})`);
 
-  newsPieceIdsToShare.slice(0, maxNewsToShare).forEach(async (newsPieceId, index) => {
+  newsPieceIdsToShare.slice(0, maxNumberOfNewsToShare).forEach(async (newsPieceId, index) => {
     const newsPiece = localData.previousNews[newsPieceId];
     const message = `${newsPieceId} - ${newsPiece.title}`;
 
