@@ -209,6 +209,22 @@ const categoryNames = {
     en: 'Trending',
     es: 'Tendencia',
   },
+  music: {
+    en: 'Music',
+    es: 'Música',
+  },
+  cinema: {
+    en: 'Cinema',
+    es: 'Cine',
+  },
+  ecology: {
+    en: 'Ecology',
+    es: 'Ecología',
+  },
+  history: {
+    en: 'History',
+    es: 'Historia',
+  },
 }
 
 
