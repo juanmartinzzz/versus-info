@@ -204,7 +204,7 @@ const InsertQuestionsHelper = () => {
             <div className="flex flex-wrap p-4-md rounded-md shadow-md bg-white p-4">
               <SectionHeader title="Pregunta y opciones de respuesta" />
 
-              <CategorySelector categoryId={items[index].categoryId} index={index} editItem={editItem} />
+              <CategorySelector categoryId={items[index].categoryId} index={index} items={items} editItem={editItem} />
 
               <div className="mb-2 w-full flex flex-col">
                 <span className="font-bold text-center">Pregunta</span>
