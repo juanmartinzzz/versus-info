@@ -29,11 +29,13 @@ const useQuiz = () => {
   const isComplete = currentQuestionIndex >= questions.length;
   const progress = (currentQuestionIndex / questions.length) * 100;
 
-  const handleUpdateAnswersData = ({questionId, property, value}) => {
+  const handleUpdateAnswersData = ({questionId, values}) => {
     const newAnswersData = {...answersData, [questionId]: {
       ...answersData[questionId],
-      [property]: value,
+      ...values,
     }};
+
+    console.log({newAnswersData})
 
     setAnswersData(newAnswersData);
 
@@ -93,7 +95,7 @@ const useQuiz = () => {
       }
 
       // Update questions data
-      const newAnswersData = handleUpdateAnswersData({questionId: currentQuestion.id, property: 'isCorrect', value: isCorrect})
+      const newAnswersData = handleUpdateAnswersData({questionId: currentQuestion.id, values: {isCorrect, selectedAnswer: answer}})
 
       localStorage.setItem(constants.localStorageKeys.previousSession, JSON.stringify({
         date: time.getDateWithoutTimeString(),
@@ -107,17 +109,6 @@ const useQuiz = () => {
 
     setRevealTimer(timer);
   }
-
-  const handleQuestionFeedback = (feedback) => {
-    // Update questions data
-    const newAnswersData = handleUpdateAnswersData({questionId: currentQuestion.id, property: 'feedback', value: feedback});
-    const previousSession = localStorage.getItem(constants.localStorageKeys.previousSession) ? JSON.parse(localStorage.getItem(constants.localStorageKeys.previousSession)) : null;
-
-    if (previousSession) {
-      previousSession.answersData = newAnswersData;
-      localStorage.setItem(constants.localStorageKeys.previousSession, JSON.stringify(previousSession));
-    }
-  };
 
   const handleNextQuestion = () => {
     if(!isRevealed) {
@@ -147,7 +138,6 @@ const useQuiz = () => {
     handleNextQuestion,
     currentQuestionIndex,
     handleLoadLocalState,
-    handleQuestionFeedback,
     handleLoadQuestionsFromRemote,
   }
 }

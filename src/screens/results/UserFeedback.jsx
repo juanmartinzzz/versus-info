@@ -1,8 +1,7 @@
 import { useState } from "react";
-import { Share2 } from "lucide-react";
 import { motion } from "framer-motion";
-import { internationalization } from "../internationalization/internationalization";
-import supabase from "../integrations/supabase";
+import { internationalization } from "../../internationalization/internationalization";
+import supabase from "../../integrations/supabase";
 
 const initialValues = {
   comment: '',
@@ -83,8 +82,8 @@ const UserFeedback = () => {
         <textarea
           id="improvementSuggestion"
           name="improvementSuggestion"
-          rows="3"
-          className="w-full px-3 py-2 text-secondary border"
+          rows="1"
+          className="w-full px-3 py-2 text-secondary border field-sizing-content"
           value={formData.improvementSuggestion}
           onChange={handleChange}
           placeholder={translated.weWouldLoveToHearYourSuggestions}

@@ -5,9 +5,9 @@ import MenuBar from './components/MenuBar.jsx';
 import { constants } from './data/constants.js';
 import { motion, AnimatePresence } from 'framer-motion';
 import QuestionCard from './components/QuestionCard.jsx';
-import ResultsScreen from './components/ResultsScreen.jsx';
 import LoadingScreen from './components/LoadingScreen.jsx';
 import { internationalization } from './internationalization/internationalization.js';
+import ResultsScreen from './screens/results/ResultsScreen.jsx';
 
 
 const timeToMidnight = {
@@ -32,7 +32,6 @@ function App() {
     currentQuestionIndex,
     handleLoadLocalState,
     handleLoadQuestionsFromRemote,
-    handleQuestionFeedback,
   } = useQuiz()
 
   useEffect(() => {
@@ -123,7 +122,6 @@ function App() {
                       onNext={handleNextQuestion}
                       selectedAnswer={selectedAnswer}
                       onAnswerSelect={handleAnswerSelect}
-                      onFeedback={handleQuestionFeedback}
                       currentQuestionIndex={currentQuestionIndex}
                     />
                   ) : (

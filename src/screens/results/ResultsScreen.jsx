@@ -1,12 +1,15 @@
-import time from '../utils/time';
+import time from '../../utils/time';
+import { Share2 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { QRCodeSVG } from 'qrcode.react';
 import { useEffect, useState } from 'react';
-import { constants } from '../data/constants';
-import supabase from '../integrations/supabase';
-import { Hexagon, Share2, Star, Trophy } from 'lucide-react';
-import { internationalization } from '../internationalization/internationalization';
+import ScoreAnimation from './ScoreAnimation';
+import { constants } from '../../data/constants';
+import supabase from '../../integrations/supabase';
 import UserFeedback from './UserFeedback';
+import { internationalization } from '../../internationalization/internationalization';
+import ShareWithQRCode from './ShareWithQRCode';
+import QuestionsReview from './QuestionsReview';
 
 const upsertAnswer = async ({score, answersData}) => {
   // Don't store answers for Dev environment
@@ -92,41 +95,7 @@ const ResultsScreen = ({ score, answersData, questions }) => {
       transition={{ delay: 0.66, duration: 0.66 }}
       className="bg-white/80 backdrop-blur-xs rounded-md p-6 shadow-lg text-center"
     >
-      <div className="mb-4 relative flex flex-col items-center justify-center">
-        <motion.div
-          initial={{ scale: 0.5 }}
-          animate={{
-            scale: [1, 2, 2, 1, 1],
-            rotate: [0, 0, 270, 270, 0],
-          }}
-          transition={{ duration: 1.66, delay: 0.33 }}
-        >
-          <Hexagon className="top-0 w-38 h-38 text-gray-400" fill="var(--color-gray-300)" strokeWidth={0.33} />
-        </motion.div>
-
-        <motion.div
-          initial={{ scale: 0 }}
-          animate={{ scale: 1 }}
-          transition={{ type: "spring", duration: 1.66, delay: 0.66 }}
-          className="absolute top-7 w-24 h-24 mx-auto mb-6 rounded-full bg-linear-to-br from-warning to-danger flex items-center justify-center"
-        >
-          <Trophy className="w-12 h-12 text-white" />
-        </motion.div>
-      </div>
-
-      <h2 className="text-3xl mb-4 text-secondary uppercase font-bold">
-        {translated.done}
-      </h2>
-
-      <h2 className="text-3xl  font-bold">
-        <span className='bg-linear-to-r from-accent1 to-accent3 bg-clip-text text-transparent'>{translated.yourScoreTodayWas}</span>
-      </h2>
-
-      <div className="mb-4 relative flex flex-col items-center justify-center">
-        <Star className="top-0 w-38 h-38 text-warning" strokeWidth={1} />
-        <span className="absolute top-5 text-9xl text-accent2 font-bold">{score}</span>
-        <span className="absolute top-4 text-9xl text-accent1/66 font-bold">{score}</span>
-      </div>
+      <ScoreAnimation score={score} />
 
       <div className="flex flex-col gap-4 mt-4">
         {shouldShowSharingInstructions ? <SharingInstructions /> : <ShareResultsButton />}
@@ -134,28 +103,20 @@ const ResultsScreen = ({ score, answersData, questions }) => {
         <p className="text-md text-secondary font-semibold leading-tight">{translated.soTheyCanAlsoLearnAboutTopCurrentEvents}</p>
       </div>
 
-      <div className=" mt-8 flex flex-col gap-4">
+      {/* Questions review  */}
+      <div className='mt-16'>
+        <QuestionsReview questions={questions} answersData={answersData} />
+      </div>
+
+      {/* User feedback */}
+      <div className="mt-16 max-w-sm mx-auto flex flex-col gap-4">
         <UserFeedback />
       </div>
 
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.5 }}
-        className="mt-8"
-      >
-        <p className="text-md text-secondary mb-2">{translated.useThisQrCodeToChallengeSomeoneInFrontOfYou}</p>
-
-        <div className="flex justify-center p-6 bg-accent1/15 rounded-md">
-          <QRCodeSVG
-            value={window.location.href}
-            size={150}
-            bgColor="#ffffff"
-            fgColor="var(--color-accent3)"
-            className="rounded-md shadow-lg"
-          />
-        </div>
-      </motion.div>
+      {/* Share with QR code */}
+      <div className="mt-16 flex flex-col gap-4">
+        <ShareWithQRCode />
+      </div>
     </motion.div>
   )
 }

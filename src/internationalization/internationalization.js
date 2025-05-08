@@ -155,6 +155,26 @@ const resultsScreen = {
 }
 
 
+/// Questions review
+const questionsReview = {
+  correctAnswer: {
+    en: 'Correct answer',
+    es: 'Respuesta correcta',
+  },
+  yourChoice: {
+    en: 'Your choice',
+    es: 'Tu respuesta',
+  },
+  yourAnswers: {
+    en: 'Your answers',
+    es: 'Tus respuestas',
+  },
+  reviewHowYouDidToday: {
+    en: 'Review how you did today',
+    es: 'Revisa cómo te fue hoy',
+  },
+}
+
 /// Categories
 const categoryNames = {
   politics: {
@@ -248,7 +268,7 @@ const sendFeedback = {
   },
   emailPhoneOrSocialMediaHandle: {
     en: 'Email, social media handle, phone - anything you want',
-    es: 'Correo, usuario en redes sociales, teléfono - lo que quieras',
+    es: 'Correo, insta, whatsapp - lo que quieras',
   },
   whatCouldWeDoToMakeYourExperienceBetter: {
     en: 'What could we do to make your experience better?',
@@ -271,6 +291,7 @@ const allGlobalTexts = {
   ...sendFeedback,
   ...categoryNames,
   ...resultsScreen,
+  ...questionsReview,
 };
 
 // Helper to temporarily import and check property names and then remove

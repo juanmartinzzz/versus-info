@@ -9,13 +9,11 @@ const QuestionCard = ({
   onNext,
   question,
   isRevealed,
-  onFeedback,
   selectedAnswer,
   onAnswerSelect,
   currentQuestionIndex,
 }) => {
   const translated = internationalization.getTranslated();
-  const [feedbackGiven, setFeedbackGiven] = useState(null);
 
   if (!question) {
     return null;
@@ -42,37 +40,7 @@ const QuestionCard = ({
   const handleNext = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    setFeedbackGiven(null);
     onNext();
-  }
-
-  const handleFeedback = (feedback) => {
-    setFeedbackGiven(feedback);
-    onFeedback(feedback);
-  }
-
-  const FeedbackButtons = ({ size = 18 }) => {
-    return(
-      <motion.div
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="flex items-center justify-center gap-4"
-      >
-        <button
-          onClick={() => handleFeedback('thumbsDown')}
-          className={`hover:bg-gray-100 cursor-pointer`}
-        >
-          <ThumbsDown size={size} className={`${feedbackGiven === 'thumbsDown' ? 'text-danger' : 'text-primary'}`} />
-        </button>
-
-        <button
-          onClick={() => handleFeedback('thumbsUp')}
-          className={`hover:bg-gray-100 cursor-pointer`}
-        >
-          <ThumbsUp size={size} className={`${feedbackGiven === 'thumbsUp' ? 'text-accent1' : 'text-primary'}`} />
-        </button>
-      </motion.div>
-    )
   }
 
   return (
@@ -83,7 +51,7 @@ const QuestionCard = ({
       exit="exit"
       className="bg-white backdrop-blur-xs rounded-md p-6 shadow-lg"
     >
-      {/* Category, emoji and feedback buttons */}
+      {/* Category and emoji */}
       <motion.div
         variants={itemVariants}
         className="flex justify-between gap-2 text-info mb-4"
@@ -94,8 +62,6 @@ const QuestionCard = ({
           <span className="text-xl font-semibold">{question.category}</span>
           <span className="text-xl font-semibold uppercase">{translated[constants.categories.find(category => category.id === question.categoryId)?.nameKey]}</span>
         </div>
-
-        <FeedbackButtons />
       </motion.div>
 
       <motion.div
