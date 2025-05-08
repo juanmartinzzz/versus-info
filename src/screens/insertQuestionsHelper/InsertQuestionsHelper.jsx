@@ -4,6 +4,7 @@ import SectionHeader from "./SectionHeader";
 import { Check, SaveIcon } from "lucide-react";
 import CategorySelector from "./CategorySelector";
 import supabase from "../../integrations/supabase";
+import SuggestedAlternativeAnswers from "./SuggestedAlternativeAnswers";
 
 const defaultItems = [1,2,3,4,5].map(index => ({
   id: `${index}`,
@@ -24,6 +25,35 @@ const defaultItems = [1,2,3,4,5].map(index => ({
       value: '',
       correct: false
     }
+  ],
+  correctAnswer: '',
+  incorrectAnswer1: '',
+  incorrectAnswer2: '',
+  suggestedIncorrectAnswers: [
+    {
+      en: '',
+      es: '',
+    },
+    {
+      en: '',
+      es: '',
+    },
+    {
+      en: '',
+      es: '',
+    },
+    {
+      en: '',
+      es: '',
+    },
+    {
+      en: '',
+      es: '',
+    },
+    {
+      en: '',
+      es: '',
+    },
   ],
   newsArticleUrl: '',
   expandedInfo: '',
@@ -86,10 +116,8 @@ const DirectJsonInput = ({index, editItem}) => {
 const InsertQuestionsHelper = () => {
   const [error, setError] = useState(null);
   const [items, setItems] = useState(defaultItems);
-  const [indexFocused, setIndexFocused] = useState(null);
   const [itemsSaved, setItemsSaved] = useState(defaultItems);
   const [relevantDate, setRelevantDate] = useState(tomorrowsDate);
-  const textareaRows = { focused: 12, unfocused: 4 };
 
   useEffect(() => {
     supabase.getRelevantQuestionByDate({date: relevantDate}).then(question => {
@@ -102,12 +130,30 @@ const InsertQuestionsHelper = () => {
   }, [relevantDate]);
 
   const saveQuestions = () => {
-    setItemsSaved(items);
+    const itemsToSave = items.map(item => ({
+      ...item,
+      options: [
+        {
+          value: item.incorrectAnswer1,
+          correct: false
+        },
+        {
+          value: item.correctAnswer,
+          correct: true
+        },
+        {
+          value: item.incorrectAnswer2,
+          correct: false
+        }
+      ].sort((a, b) => Math.random() > 0.5 ? -1 : 1)
+    }));
+    setItems(itemsToSave);
+    setItemsSaved(itemsToSave);
 
     supabase.upsertQuestion({
       question: {
         relevantDate,
-        items
+        items: itemsToSave
       }
     });
   }
@@ -125,31 +171,13 @@ const InsertQuestionsHelper = () => {
     });
   }
 
-  const editItemOption = ({index, optionIndex, key, value}) => {
-    setItems(prevItems => {
-      const newItems = [...prevItems];
-      newItems[index].options[optionIndex] = {...newItems[index].options[optionIndex], [key]: value};
-      return newItems;
-    });
-  }
-
-  // Mark one and only one option per questionas correct
-  const markCorrectAnswer = (index, optionIndex) => {
-    // Unmark all other options of the current question being edited
-    const newItems = items.map((item, itemIndex) => ({
-      ...item,
-      options: item.options.map((option, optionIndex) => ({
-        ...option,
-        correct: (itemIndex === index) ? false : option.correct
-      }))
-    }));
-    newItems[index].options[optionIndex].correct = true;
-
-    setItems(newItems);
-  }
+  const textareaClasses = 'w-full pb-1 border-b-2 border-gray-600 leading-none focus:outline-none field-sizing-content';
 
   return (
     <div className="p-4 md:p-8">
+      {/* <div className="max-h-[256px] overflow-y-scroll p-4 bg-white text-[9px] font-mono whitespace-pre-wrap">
+        {JSON.stringify(items, null, 2)}
+      </div> */}
       <h1 className="text-2xl font-bold mb-4">Insert Questions Helper</h1>
 
       {/* Date picker */}
@@ -179,40 +207,43 @@ const InsertQuestionsHelper = () => {
               <CategorySelector categoryId={items[index].categoryId} index={index} editItem={editItem} />
 
               <div className="mb-2 w-full flex flex-col">
-                <span className="font-semibold leading-none">Pregunta</span>
+                <span className="font-bold text-center">Pregunta</span>
 
                 <textarea
-                  rows={indexFocused === index ? textareaRows.focused : textareaRows.unfocused}
+                  rows={1}
                   value={items[index].text}
+                  className={textareaClasses}
                   onChange={({target}) => editItem({index, key: 'text', value: target.value})}
-                  onFocus={() => setIndexFocused(index)}
-                  onBlur={() => setIndexFocused(null)}
-                  className="px-2 py-0 border border-gray-300 leading-none"
                 ></textarea>
               </div>
 
               {/* Three text inputs for the 3 possible answers to the question */}
               <div className="mb-8 w-full">
-                {Array.from({ length: 3 }, (_, answerIndex) => (
-                  <div key={answerIndex} className="mb-2 font-semibold w-full">
-                    {/* Label and checkbox to mark answer as correct */}
-                    <span className="leading-none">Opción {answerIndex + 1}</span>
-                    <span className="ml-2 leading-none">Correcta</span>
-                    <input
-                      type="checkbox"
-                      className="ml-2 w-5 h-5 text-accent1 border-gray-300 focus:ring-accent1 focus:ring-2"
-                      checked={items[index].options[answerIndex].correct}
-                      onChange={() => markCorrectAnswer(index, answerIndex)}
-                    />
+                <div className="mt-2 font-bold text-accent2 text-center">Opción correcta</div>
+                <textarea
+                  className={textareaClasses} rows={1}
+                  value={items[index].correctAnswer} onChange={({target}) => editItem({index, key: 'correctAnswer', value: target.value})}
+                ></textarea>
 
-                    <input
-                      type="text"
-                      value={items[index].options[answerIndex].value}
-                      onChange={({target}) => editItemOption({index, optionIndex: answerIndex, key: 'value', value: target.value})}
-                      className="px-2 py-0 border border-gray-300 w-full"
-                    />
-                  </div>
-                ))}
+                <div className="mt-2 font-bold text-danger text-center">Opciones incorrectas</div>
+                <textarea
+                  placeholder="Respuesta incorrecta 1"
+                  className={textareaClasses} rows={1}
+                  value={items[index].incorrectAnswer1}
+                  onChange={({target}) => editItem({index, key: 'incorrectAnswer1', value: target.value})}
+                ></textarea>
+                <textarea
+                  placeholder="Respuesta incorrecta 2"
+                  className={`${textareaClasses} mt-2`} rows={1}
+                  value={items[index].incorrectAnswer2}
+                  onChange={({target}) => editItem({index, key: 'incorrectAnswer2', value: target.value})}
+                ></textarea>
+              </div>
+
+              <SectionHeader title="Pedirle inspiración a chatyipiti" />
+
+              <div className="mb-8">
+                <SuggestedAlternativeAnswers index={index} items={items} editItem={editItem} />
               </div>
 
               <SectionHeader title="Noticia que sale tras responder" />
@@ -221,12 +252,10 @@ const InsertQuestionsHelper = () => {
                 <span className="font-semibold leading-none">Noticia muy resumida (todavía es necesario escribirla manualmente)</span>
 
                 <textarea
-                  rows={indexFocused === index ? textareaRows.focused : textareaRows.unfocused}
+                  rows={1}
                   value={items[index].expandedInfo}
                   onChange={({target}) => editItem({index, key: 'expandedInfo', value: target.value})}
-                  onFocus={() => setIndexFocused(index)}
-                  onBlur={() => setIndexFocused(null)}
-                  className="px-2 py-0 border border-gray-300 w-full leading-none"
+                  className={textareaClasses}
                 />
               </div>
 
@@ -284,7 +313,20 @@ const InsertQuestionsHelper = () => {
         ))}
       </div>
 
-      {/* Insert question to supabase */}
+      {/* Insert OpenAI API key */}
+      {!localStorage.getItem('openaiApiKey') && (
+        <div className="mt-8">
+          <input
+            type="text"
+            value={localStorage.getItem('openaiApiKey') || ''}
+            className="p-2 bg-white border border-gray-300 w-full"
+            onChange={({target}) => {localStorage.setItem('openaiApiKey', target.value); window.location.reload(); }}
+            placeholder="OpenAI API key -- aquí va la clave que activa la función de pedirle inspiración a chatyipiti"
+          />
+        </div>
+      )}
+
+      {/* Insert questions to supabase */}
       <div className="mt-8 fixed bottom-[32px] right-[32px]">
         <button className="flex items-center gap-2 bg-accent1 text-white font-bold px-4 py-2 rounded-md shadow-md cursor-pointer" onClick={saveQuestions} >
           {JSON.stringify(items) === JSON.stringify(itemsSaved) ?
@@ -299,18 +341,6 @@ const InsertQuestionsHelper = () => {
             </>
           }
         </button>
-      </div>
-
-      {/* Textarea where the questions are displayed in JSON format */}
-      <div className="mt-8">
-        <span className="font-semibold leading-none">Questions in JSON format<br />(este campo es pa' jodas técnicas)</span>
-
-        <textarea
-          rows={textareaRows.unfocused}
-          className="p-2 bg-white w-full leading-none"
-          value={JSON.stringify(items, null, 2)}
-          readOnly
-        />
       </div>
     </div>
   );
