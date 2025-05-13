@@ -26,12 +26,11 @@ const openai = {
     Please complete the following JSON structure by filling in the missing string values.
     Your response MUST only include the valid JSON structure, nothing else.
     Your response MUST be immediately parsed using javascript's JSON.parse() method without generating any errors.
-    For the 'alternativeAnswers' array, please generate 6 plausible, believable and a bit outlandish alternative answers.
-    The alternative answers must be all different from each other.
+    For the 'alternativeAnswers' array, please generate 6 plausible, believable and a bit outlandish alternative answers that may confuse someone who's trying to answer the question.
+    The alternative answers must each be of a different general topic.
     The alternative answers must be different from the correct answer.
     The alternative answers must be similar in length to the correct answer.
-    The alternative answers must be semantically similar to the correct answer.
-    If the correct answer contains a number, tend to generate alternative answers that contain numbers of different orders of magnitude.
+    If the correct answer contains a number or metric, tend to generate alternative answers that also contain a number or metric of different orders of magnitude.
     {
       question: {
         en: '',
