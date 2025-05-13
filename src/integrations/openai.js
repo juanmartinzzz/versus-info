@@ -36,10 +36,6 @@ const openai = {
         en: '',
         es: '${question}',
       },
-      correctAnswer: {
-        en: '',
-        es: '${correctAnswer}',
-      },
       alternativeAnswers: [
         {
           en: '',
